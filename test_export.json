@@ -1,0 +1,50 @@
+{
+  "export_timestamp": "2025-10-24T17:58:06.628377",
+  "total_memories": 2,
+  "memories": [
+    {
+      "id": "18e2ee24-019b-47",
+      "query_text": "Private query",
+      "answer_text": "Private answer",
+      "timestamp": "2025-10-24T17:58:06.596467",
+      "chunk_ids": [
+        "chunk2"
+      ],
+      "chunk_scores": [
+        0.8
+      ],
+      "intent": null,
+      "intent_confidence": null,
+      "model_used": null,
+      "importance_score": 0.5,
+      "user_feedback": null,
+      "feedback_text": null,
+      "access_count": 0,
+      "last_accessed": null,
+      "is_edited": false,
+      "is_private": false
+    },
+    {
+      "id": "5be101ce-2f90-49",
+      "query_text": "Public query",
+      "answer_text": "Public answer",
+      "timestamp": "2025-10-24T17:58:06.556898",
+      "chunk_ids": [
+        "chunk1"
+      ],
+      "chunk_scores": [
+        0.9
+      ],
+      "intent": null,
+      "intent_confidence": null,
+      "model_used": null,
+      "importance_score": 0.5,
+      "user_feedback": null,
+      "feedback_text": null,
+      "access_count": 0,
+      "last_accessed": null,
+      "is_edited": false,
+      "is_private": false
+    }
+  ]
+}

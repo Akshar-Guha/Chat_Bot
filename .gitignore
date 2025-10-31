@@ -1,0 +1,43 @@
+# Node modules
+node_modules/
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# dotenv environment variables file
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# various operating system files
+.DS_Store
+Thumbs.db
+
+# project-specific build artifacts
+build/
+dist/
+tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+*.un~
+*.~
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+.cache/
+.byond/

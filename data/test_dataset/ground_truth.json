@@ -1,0 +1,84 @@
+{
+  "test_queries": [
+    {
+      "query_id": "q001",
+      "query": "When was AI research founded?",
+      "expected_chunks": ["chunk_1_1"],
+      "expected_answer": "AI research was founded in 1956 at Dartmouth College",
+      "source_doc": "sample1.txt"
+    },
+    {
+      "query_id": "q002",
+      "query": "What is machine learning?",
+      "expected_chunks": ["chunk_1_2"],
+      "expected_answer": "Machine Learning is a subset of AI that enables computers to learn from data without being explicitly programmed",
+      "source_doc": "sample1.txt"
+    },
+    {
+      "query_id": "q003",
+      "query": "How do AI systems help in healthcare?",
+      "expected_chunks": ["chunk_1_3"],
+      "expected_answer": "In healthcare, AI assists in disease diagnosis, drug discovery, and personalized treatment plans",
+      "source_doc": "sample1.txt"
+    },
+    {
+      "query_id": "q004",
+      "query": "What is the primary cause of climate change?",
+      "expected_chunks": ["chunk_2_1", "chunk_2_2"],
+      "expected_answer": "The primary source of greenhouse gas emissions is the burning of fossil fuels for electricity, heat, and transportation",
+      "source_doc": "sample2.txt"
+    },
+    {
+      "query_id": "q005",
+      "query": "What types of renewable energy are mentioned?",
+      "expected_chunks": ["chunk_2_3"],
+      "expected_answer": "Solar power, wind energy, hydroelectric power, and geothermal energy",
+      "source_doc": "sample2.txt"
+    },
+    {
+      "query_id": "q006",
+      "query": "How much has Earth's temperature risen?",
+      "expected_chunks": ["chunk_2_1"],
+      "expected_answer": "The Earth's average temperature has risen by approximately 1.1 degrees Celsius since pre-industrial times",
+      "source_doc": "sample2.txt"
+    }
+  ],
+  "chunk_mappings": {
+    "chunk_1_1": {
+      "doc": "sample1.txt",
+      "start_char": 0,
+      "end_char": 378,
+      "text": "Artificial Intelligence (AI) is the simulation of human intelligence in machines that are programmed to think and learn like humans. The field of AI research was founded in 1956 at Dartmouth College, where researchers gathered to discuss the possibilities of creating intelligent machines."
+    },
+    "chunk_1_2": {
+      "doc": "sample1.txt", 
+      "start_char": 380,
+      "end_char": 850,
+      "text": "Machine Learning (ML) is a subset of AI that enables computers to learn from data without being explicitly programmed. Through algorithms and statistical models, ML systems identify patterns in data and make decisions based on those patterns. Deep Learning, a further subset of ML, uses artificial neural networks with multiple layers to progressively extract higher-level features from raw input."
+    },
+    "chunk_1_3": {
+      "doc": "sample1.txt",
+      "start_char": 852,
+      "end_char": 1250,
+      "text": "The applications of AI and ML are vast and growing. In healthcare, AI assists in disease diagnosis, drug discovery, and personalized treatment plans. Financial institutions use ML for fraud detection, risk assessment, and algorithmic trading. Autonomous vehicles rely on computer vision and deep learning to navigate safely."
+    },
+    "chunk_2_1": {
+      "doc": "sample2.txt",
+      "start_char": 0,
+      "end_char": 325,
+      "text": "Climate change represents one of the most pressing challenges of our time. The Earth's average temperature has risen by approximately 1.1 degrees Celsius since pre-industrial times, primarily due to human activities that release greenhouse gases into the atmosphere."
+    },
+    "chunk_2_2": {
+      "doc": "sample2.txt",
+      "start_char": 327,
+      "end_char": 680,
+      "text": "The primary source of greenhouse gas emissions is the burning of fossil fuels for electricity, heat, and transportation. Deforestation, industrial processes, and agriculture also contribute significantly to global emissions."
+    },
+    "chunk_2_3": {
+      "doc": "sample2.txt",
+      "start_char": 760,
+      "end_char": 1180,
+      "text": "Renewable energy offers a critical solution to combat climate change. Solar power harnesses energy from the sun using photovoltaic cells or concentrated solar power systems. Wind energy captures kinetic energy from wind using turbines to generate electricity. Hydroelectric power uses flowing water to produce energy, while geothermal energy taps into the Earth's internal heat."
+    }
+  }
+}
