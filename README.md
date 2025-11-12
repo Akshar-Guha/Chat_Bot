@@ -221,8 +221,8 @@ python -m pytest tests -v
 | Core ingestion, embeddings, indexing, CLI, legacy API, React UI | ✅ Stable |
 | Reflection loop, memory persistence, structured logging | ✅ Stable |
 | Hybrid web search integration, orchestrator caching, async query path | ✅ Stable |
-| Domain-driven FastAPI refactor (`eidetic_rag/backend`) | 🚧 In progress |
-| Streaming responses, richer model metadata, production deployment templates | 🚧 Planned |
+| Domain-driven FastAPI refactor (`eidetic_rag/backend`) | ✅ Stable  |
+| Streaming responses, richer model metadata, production deployment templates | 🚧 In Progress |
 
 ---
 
