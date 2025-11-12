@@ -331,6 +331,7 @@ const QueryPage: React.FC = () => {
                   </Button>
                 )}
               </Stack>
+            </Stack>
           </Stack>
         </form>
       </Paper>

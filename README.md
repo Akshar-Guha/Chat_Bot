@@ -1,173 +1,167 @@
-# EideticRAG - Retrieval-Augmented Generation System
+# EideticRAG — Local-First Retrieval-Augmented Intelligence Stack
 
-EideticRAG is a modular Retrieval-Augmented Generation (RAG) stack that combines
-document ingestion, semantic search, optional memory persistence, and multiple
-generation back-ends. The repository currently contains both the production
-pipeline (under `src/`) and an in-progress FastAPI refactor (under
-`eidetic_rag/backend/`).
+EideticRAG turns private document collections into trustworthy, cited answers without sending data off the workstation. The stack blends ingestion, semantic retrieval, large language model generation, reflection, and long-term memory into a cohesive developer experience.
 
-## 🏗️ Architecture Overview
+---
 
-### High-level layout
+## Why builders reach for EideticRAG
+
+1. **Local-first by design** – Every critical component runs on your hardware; bring your own models, vectors, and storage.
+2. **Defensive generation** – Reflection and verification loops reduce hallucinations before a response ever leaves the API.
+3. **Production guardrails** – Structured logging, caching, memory persistence, and staged tests ship in the box.
+4. **Multiple surfaces** – FastAPI service, CLI tooling, and a React dashboard cover automation, scripting, and product demos.
+
+---
+
+## Capability snapshot
+
+| Domain | What ships | Source |
+| --- | --- | --- |
+| Document ingestion & cleaning | PDF/TXT/HTML/Markdown parsing with metadata-aware chunking | `DocumentIngestor`, `TextChunker` @src/core/ingestor.py#1-134 @src/core/chunker.py#1-246 |
+| Semantic retrieval | Persistent ChromaDB index with embedding cache | `VectorIndex`, `EmbeddingGenerator` @src/core/vector_index.py#1-315 @src/core/embeddings.py#1-209 |
+| Adaptive orchestration | Coordinated retrieval, generation, caching, and stats | `EideticRAGOrchestrator` @src/orchestration/orchestrator.py#1-390 |
+| Reflection guardrails | Answer verification, regeneration, escalation, or refusal | `ReflectionAgent`, `VerificationEngine` @src/reflection/reflection_agent.py#1-355 @src/reflection/verification_engine.py#1-151 |
+| Long-term memory | SQLite/SQLAlchemy store with embedding-powered recall | `MemoryManager` @src/memory/memory_manager.py#1-227 |
+| Observability | Loguru-based structured logs, cache tracing, performance metrics | `StructuredLogger` @src/orchestration/logger.py#1-276 |
+| Optional web context | Async hybrid web search ingestion for expansive answers | `WebSearchService` integration @eidetic_rag/backend/app/main.py#176-320 |
+| Interfaces | FastAPI endpoints, Python CLI, and React dashboard | `src/api/`, `src/core/cli.py`, `src/frontend/` |
+
+---
+
+## Architecture at a glance
 
 ```text
 src/
-├── api/             # FastAPI application (current production entrypoint)
-├── core/            # Document ingestion, chunking, embeddings, vector index
-├── generation/      # RAG pipeline and LLM generator integrations
-├── memory/          # SQLite-backed long-term memory manager
-├── orchestration/   # End-to-end controller (retrieval + reflection + memory)
-├── reflection/      # Verification and reflection agent
-├── retrieval/       # Intent-aware retrieval controller
-└── frontend/        # React dashboard (CRA-based)
+├── api/             # Production FastAPI surface
+├── core/            # Ingestion, chunking, embeddings, vector index
+├── generation/      # RAG pipeline + LLM generator adapters
+├── retrieval/       # Policy-driven retrieval controller
+├── reflection/      # Verification + reflection loop
+├── memory/          # Persistent conversation memory
+├── orchestration/   # Orchestrator, caching, structured logging
+└── frontend/        # React 18 dashboard (CRA)
 
-eidetic_rag/backend/ # New FastAPI service under active development
+eidetic_rag/backend/ # Domain-driven FastAPI refactor (WIP)
 ```
 
-Key data flow:
+```mermaid
+flowchart TD
+    A[Document Ingestor] --> B[Text Chunker]
+    B --> C[Embedding Generator]
+    C --> D[Vector Index]
+    D --> E{Retrieval Controller}
+    E --> F[LLM Generator]
+    F --> G{Reflection Agent}
+    G -->|Accept| H[Answer + Citations]
+    G -->|Improve| E
+    G -->|Refuse| I[Transparent Decline]
+    H --> J[(Memory Store)]
+    J --> E
 
-1. `core.ingestor.DocumentIngestor` loads PDF/TXT/HTML/Markdown sources and
-   returns structured documents (@src/core/ingestor.py#1-134).
-2. `core.chunker.TextChunker` splits documents into overlapping chunks with rich
-   metadata (@src/core/chunker.py#1-246).
-3. `core.embeddings.EmbeddingGenerator` embeds chunks via
-   `sentence-transformers` and persists cached vectors
-   (@src/core/embeddings.py#1-209).
-4. `core.vector_index.VectorIndex` stores embeddings in ChromaDB for semantic
-   retrieval (@src/core/vector_index.py#1-315).
-5. `generation.rag_pipeline.RAGPipeline` orchestrates retrieval,
-   generation, and provenance formatting (@src/generation/rag_pipeline.py#1-278).
-6. Optional modules extend the pipeline with intent-aware retrieval
-   (@src/retrieval/retrieval_controller.py#1-431), reflection-driven
-   verification (@src/reflection/reflection_agent.py#1-355), and persistent
-   memory via SQLite/SQLAlchemy (@src/memory/memory_manager.py#1-517).
+```
 
-### FastAPI backends
+---
 
-* **Current API** – `python -m src.api.main`
-  * Endpoints: `/query`, `/ingest`, `/stats`, `/model/info`, `/index/clear`
-  * Uses the orchestration pipeline (`generation.rag_pipeline.RAGPipeline`) for
-    inference.
+## How the intelligence loop behaves
 
-* **Refactor (WIP)** – `eidetic_rag/backend/app/main.py`
-  * Domain-driven module layout with dependency-managed services and Pydantic
-    schemas. This backend is still being wired into the production pipeline.
+1. **Ingestion** – `DocumentIngestor` normalises raw documents and hands rich metadata to `TextChunker` for overlap-aware segmentation.
+2. **Embedding & indexing** – `EmbeddingGenerator` caches sentence-transformer vectors while `VectorIndex` maintains ChromaDB persistence for lightning-fast semantic lookups.
+3. **Retrieval orchestration** – `RetrievalController` weighs cached hits, live search, and memory recall before streaming chunks into the pipeline.
+4. **Generation** – `LLMGenerator` abstracts local Ollama, Hugging Face endpoints, or API-based models while preserving provenance metadata.
+5. **Reflection** – `ReflectionAgent` runs verification cycles via `VerificationEngine`, deciding to accept, regenerate, broaden retrieval, escalate, or refuse responses.
+6. **Memory persistence** – `MemoryManager` stores successful exchanges with embeddings so future queries inherit relevant context.
+7. **Observability** – `StructuredLogger` captures every stage with JSON logs, cache hit tracing, and performance timings for post-hoc analysis.
 
-## 🚀 Key Features
+---
 
-### Core capabilities
+## Operational surfaces
 
-* **Multi-format ingestion** – TXT, Markdown, HTML, and PDF via
-  `DocumentIngestor`.
-* **Configurable chunking** – Paragraph-aware splitting with overlap and
-  metadata capture.
-* **Semantic retrieval** – Persistent ChromaDB index with collection recovery
-  safeguards.
-* **LLM integration** – Local Ollama, Hugging Face endpoints, or mock mode via
-  `generation.generator.LLMGenerator`.
-* **Optional reflection** – Verification engine evaluates hallucination score
-  and can trigger regeneration or refusal.
+### FastAPI services
 
-* **Persistent memory** – SQLite database managed through SQLAlchemy models for
-  storing past Q&A pairs.
+- **Primary service** (`python -m src.api.main`)
+  - Endpoints: `/query`, `/ingest`, `/stats`, `/model/info`, `/index/clear`
+  - Async orchestration keeps the request thread lightweight thanks to the executor-backed `process_query_async` pipeline.
+- **Refactor-in-progress** (`uvicorn eidetic_rag.backend.app.main:app --reload`)
+  - Modular dependency injection, optional hybrid web search, and generator hot-swaps for experimentation.
 
-### Frontend
+### CLI tooling
 
-* React 18 + TypeScript single-page app (Create React App) located in
-  `src/frontend/` with Material UI components.
-* Proxy configured to hit the FastAPI backend during development.
+`python -m src.core.cli` exposes ingestion, reindex, inspect, and search commands—ideal for scripting or quick regression checks without booting the API.
 
-## 🛠️ Quick Start
+### Frontend dashboard
 
-### Prerequisites
+React 18 + TypeScript UI lives in `src/frontend/`. During development it proxies to the FastAPI backend, showing ingestion status, query trails, and provenance evidence for demos.
 
-* Python 3.9+
-* Node.js 16+
-* (Optional) [Ollama](https://ollama.ai/) for local LLM inference
+---
 
-### Backend setup (current pipeline)
+## Local-first workflow
 
 ```bash
-# From the project root
+# 1. Provision the environment (Windows example)
 python -m venv .venv
-.venv\Scripts\activate  # On Windows
-
+.venv\Scripts\activate
 pip install -r requirements.txt
 
-# Launch FastAPI
+# 2. Ingest a corpus
+python -m src.core.cli ingest data/sample_documents/sample1.txt
+
+# 3. Serve the API
 python -m src.api.main
-```
 
-* API docs: http://localhost:8000/docs
-* RAG endpoints exposed under the root path.
-
-### Backend setup (experimental refactor)
-
-```bash
-# Optional: run the new service once dependencies are installed
-python -m uvicorn eidetic_rag.backend.app.main:app --reload
-```
-The refactor currently boots with mock services until the orchestration layer is
-fully integrated.
-
-### Frontend setup
-
-```bash
+# 4. (Optional) Run the dashboard
 cd src/frontend
 npm install
 npm start
 ```
 
-The development server proxies API calls to <http://localhost:8000>.
+Prefer terminal-first interactions? Call `python -m src.core.cli search "How does caching work?"` to run retrieval and reflection directly from the CLI.
 
-## 📚 CLI Utilities
+---
 
-`src/core/cli.py` exposes ingestion, reindex, inspect, and search commands.
-Example:
+## Configuration & extensibility
 
-```bash
-python -m src.core.cli ingest data/sample_documents/sample1.txt
-python -m src.core.cli search "What is machine learning?"
-```
+- The legacy API reads environment variables via `python-dotenv` (`RAG_GENERATOR_TYPE`, `RAG_MODEL_NAME`, `RAG_API_KEY`, `RAG_TEMPERATURE`, etc.) in `src/api/main.py`.
+- The refactored backend centralises settings in `eidetic_rag.backend.config.settings` and bootstraps orchestrator, cache, and memory directories on startup.
+- Swap embedding models by editing `src/core/embeddings.py` or override chunking policies (`chunk_size`, `chunk_overlap`) through orchestrator config.
+- Memory lives in `memory.db`; delete or migrate the SQLite file to rotate stored conversations.
 
-## 🧪 Testing
+---
 
-The `tests/` directory contains staged integration suites covering ingestion,
-retrieval, reflection, orchestration, and frontend smoke checks.
+## Quality gates
+
+- Staged pytest suites (`tests/test_stage*.py`) walk through ingestion → retrieval → reflection workflows.
+- API smoke tests (`tests/general/test_api_integration.py`) validate the `/query` contract end-to-end.
+- Additional general tests cover CLI utilities, caching, and orchestration behaviours, guarding regressions as new backends come online.
+
+Run everything with:
 
 ```bash
 python -m pytest tests -v
 ```
 
-Individual stage modules (e.g., `tests/test_stage5.py`) exercise dedicated
-subsystems such as the reflection agent.
+---
 
-## ⚙️ Configuration Notes
+## Roadmap & status
 
-* Environment variables for the legacy API are read via `python-dotenv` in
-  `src/api/main.py`. Override behaviour with:
-  * `RAG_GENERATOR_TYPE`, `RAG_MODEL_NAME`, `RAG_API_KEY`, `RAG_API_BASE`,
-    `RAG_TEMPERATURE`, `RAG_TOP_P`, `RAG_MAX_TOKENS`.
-* The new backend loads settings from `.env` using
-  `eidetic_rag.backend.config.settings.Settings`.
-* Memory persistence defaults to `./memory.db`. Delete the file to reset stored
-  conversations.
+| Track | Status |
+| --- | --- |
+| Core ingestion, embeddings, indexing, CLI, legacy API, React UI | ✅ Stable |
+| Reflection loop, memory persistence, structured logging | ✅ Stable |
+| Hybrid web search integration, orchestrator caching, async query path | ✅ Stable |
+| Domain-driven FastAPI refactor (`eidetic_rag/backend`) | 🚧 In progress |
+| Streaming responses, richer model metadata, production deployment templates | 🚧 Planned |
 
-## 🔄 Project Status
+---
 
-* **Stable**: Core ingestion, embedding, indexing, RAG pipeline, CLI, legacy
-  FastAPI API, React frontend, staged test harness.
-* **In progress**: Integration between the new FastAPI service (`eidetic_rag`)
-  and the production pipeline, expanded model metadata endpoints, streaming
-  responses.
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository.
 2. Create a feature branch.
-3. Make changes and add/adjust tests.
-4. Submit a pull request describing the affected pipeline stage(s).
+3. Add or adjust tests relevant to your change.
+4. Open a pull request with context on the pipeline layers you touched.
 
-## 📄 License
+---
 
-This project is licensed under the MIT License.
+## License
+
+MIT License.

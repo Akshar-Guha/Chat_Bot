@@ -10,6 +10,14 @@ REM Activate virtual environment if it exists
 if exist .venv\Scripts\activate.bat (
     echo Activating virtual environment...
     call .venv\Scripts\activate.bat
+    echo.
+    echo --- DIAGNOSTICS ---
+    echo Python executable being used:
+    where python
+    echo -------------------
+    echo.
+) else (
+    echo WARNING: Virtual environment not found. Using system Python.
 )
 
 REM Ensure Ollama daemon is running
@@ -23,15 +31,17 @@ if not "%RAG_BACKEND_PORT%"=="" set "BACKEND_PORT=%RAG_BACKEND_PORT%"
 if not "%RAG_BACKEND_HOST%"=="" set "BACKEND_HOST=%RAG_BACKEND_HOST%"
 echo.
 echo Checking availability of backend port %BACKEND_PORT%...
-call :ensure_port_free %BACKEND_PORT%
-if errorlevel 1 goto :port_conflict_abort
+echo Automatically terminating any existing process on port %BACKEND_PORT%…
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :%BACKEND_PORT% ^| findstr LISTENING') do (
+    taskkill /F /PID %%a
+)
 
 echo.
 echo Starting backend on http://%BACKEND_HOST%:%BACKEND_PORT%...
 echo Press Ctrl+C to stop the server
 echo.
 
-python -m eidetic_rag.backend.app.main
+.\.venv\Scripts\python.exe -m uvicorn eidetic_rag.backend.app.main:app --host %BACKEND_HOST% --port %BACKEND_PORT% --reload
 set "PY_EXIT=%ERRORLEVEL%"
 
 if "%PY_EXIT%"=="0" goto :backend_success

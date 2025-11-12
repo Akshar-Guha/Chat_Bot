@@ -80,6 +80,7 @@ class QueryRequest(BaseModel):
     use_reflection: Optional[bool] = True
     use_web_search: Optional[bool] = False
     search_strategy: Optional[str] = "hybrid"  # "local_only", "web_only", or "hybrid"
+    use_wikipedia: Optional[bool] = False
 
 
 class QueryResponse(BaseModel):

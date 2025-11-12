@@ -22,6 +22,8 @@ venv/
 index/
 cache/
 logs/
+test_logs/
+test*_logs/
 
 # Binary cache artifacts
 *.bin

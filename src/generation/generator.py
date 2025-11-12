@@ -62,7 +62,9 @@ class LLMGenerator:
             },
         )
 
-    def generate(self, query: str, retrieved_chunks: List[Dict]) -> GenerationResult:
+    def generate(
+        self, query: str, retrieved_chunks: List[Dict]
+    ) -> GenerationResult:
         """Generate an answer using the configured backend."""
 
         context = self._build_context(retrieved_chunks)
@@ -110,15 +112,29 @@ class LLMGenerator:
             return response.strip()
         except Exception as exc:
             logger.exception("Ollama request failed")
+            error_message = str(exc)
+            # Check for common OOM error messages
+            if "500" in error_message and "memory" in error_message:
+                details = (
+                    "The model requires more memory than is available. "
+                    "Try a smaller model or increase available system/GPU memory."
+                )
+            else:
+                details = (
+                    "Ensure the Ollama daemon is running and the model is available."
+                )
+
             raise RuntimeError(
-                "Failed to reach Ollama. Ensure the daemon is running."
+                f"Ollama call failed: {details} Details: {error_message}"
             ) from exc
 
     def _generate_with_huggingface(self, prompt: str) -> str:
         if not self.api_key:
             raise RuntimeError("Missing Hugging Face API key for online mode")
         if not self.api_base:
-            raise RuntimeError("Missing Hugging Face endpoint URL for online mode")
+            raise RuntimeError(
+                "Missing Hugging Face endpoint URL for online mode"
+            )
 
         headers = {
             "Authorization": f"Bearer {self.api_key}",
