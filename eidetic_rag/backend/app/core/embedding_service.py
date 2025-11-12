@@ -2,7 +2,7 @@
 Embedding service for the RAG system
 """
 
-from typing import List, Any
+from typing import List, Dict, Any
 from pathlib import Path
 import sys
 import asyncio

@@ -5,6 +5,7 @@ Retrieval Controller - Manages adaptive retrieval based on intent
 from typing import Dict, List, Optional
 from dataclasses import dataclass
 from pathlib import Path
+import re
 import numpy as np
 
 from .intent_classifier import IntentClassifier, QueryIntent
@@ -164,7 +165,7 @@ class RetrievalController:
             )
         
         # Apply override k if provided
-        if override_k:
+        if override_k is not None:
             policy.k = override_k
         
         # Expand query if needed
@@ -244,7 +245,7 @@ class RetrievalController:
         # Search index
         chunks = self.index.search(
             query_embedding=query_embedding,
-            k=policy.k * 2  # Retrieve more for filtering
+            k=max(1, policy.k * 2)  # Retrieve more for filtering, ensure k > 0
         )
         
         return chunks
@@ -280,8 +281,6 @@ class RetrievalController:
     def _extract_entities(self, query: str) -> List[str]:
         """Extract entities from query (simple version)"""
         # Simple noun phrase extraction
-        import re
-        
         # Look for capitalized words (potential entities)
         entities = re.findall(r'\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b', query)
         

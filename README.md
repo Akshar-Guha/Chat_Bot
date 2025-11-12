@@ -1,317 +1,173 @@
-# EideticRAG - Advanced RAG System
+# EideticRAG - Retrieval-Augmented Generation System
 
-A modern, production-ready Retrieval-Augmented Generation (RAG) system with persistent memory, reflection capabilities, and a beautiful React frontend.
+EideticRAG is a modular Retrieval-Augmented Generation (RAG) stack that combines
+document ingestion, semantic search, optional memory persistence, and multiple
+generation back-ends. The repository currently contains both the production
+pipeline (under `src/`) and an in-progress FastAPI refactor (under
+`eidetic_rag/backend/`).
 
 ## 🏗️ Architecture Overview
 
-This project follows modern software engineering best practices with a clean, domain-driven architecture:
+### High-level layout
 
-### Backend Structure (Domain-Driven Design)
-```
-eidetic_rag/backend/
-├── app/
-│   ├── api/v1/          # REST API endpoints organized by domain
-│   │   ├── health.py    # Health checks
-│   │   ├── queries.py   # Query operations
-│   │   ├── documents.py # Document management
-│   │   └── memory.py    # Memory operations
-│   ├── core/            # Core functionality
-│   │   ├── dependencies.py # Dependency injection
-│   │   └── services/    # Business logic services
-│   ├── models/          # Pydantic models
-│   └── main.py         # Application entry point
-├── config/              # Configuration management
-└── tests/              # Comprehensive test suite
+```text
+src/
+├── api/             # FastAPI application (current production entrypoint)
+├── core/            # Document ingestion, chunking, embeddings, vector index
+├── generation/      # RAG pipeline and LLM generator integrations
+├── memory/          # SQLite-backed long-term memory manager
+├── orchestration/   # End-to-end controller (retrieval + reflection + memory)
+├── reflection/      # Verification and reflection agent
+├── retrieval/       # Intent-aware retrieval controller
+└── frontend/        # React dashboard (CRA-based)
+
+eidetic_rag/backend/ # New FastAPI service under active development
 ```
 
-### Frontend Structure (Feature-Based)
-```
-src/frontend/src/
-├── components/          # Reusable UI components
-│   ├── ui/             # Basic UI components
-│   ├── features/       # Feature-specific components
-│   └── common/         # Shared components
-├── hooks/              # Custom React hooks
-├── services/           # API services
-├── types/              # TypeScript definitions
-├── utils/              # Utility functions
-└── pages/              # Route components
-```
+Key data flow:
+
+1. `core.ingestor.DocumentIngestor` loads PDF/TXT/HTML/Markdown sources and
+   returns structured documents (@src/core/ingestor.py#1-134).
+2. `core.chunker.TextChunker` splits documents into overlapping chunks with rich
+   metadata (@src/core/chunker.py#1-246).
+3. `core.embeddings.EmbeddingGenerator` embeds chunks via
+   `sentence-transformers` and persists cached vectors
+   (@src/core/embeddings.py#1-209).
+4. `core.vector_index.VectorIndex` stores embeddings in ChromaDB for semantic
+   retrieval (@src/core/vector_index.py#1-315).
+5. `generation.rag_pipeline.RAGPipeline` orchestrates retrieval,
+   generation, and provenance formatting (@src/generation/rag_pipeline.py#1-278).
+6. Optional modules extend the pipeline with intent-aware retrieval
+   (@src/retrieval/retrieval_controller.py#1-431), reflection-driven
+   verification (@src/reflection/reflection_agent.py#1-355), and persistent
+   memory via SQLite/SQLAlchemy (@src/memory/memory_manager.py#1-517).
+
+### FastAPI backends
+
+* **Current API** – `python -m src.api.main`
+  * Endpoints: `/query`, `/ingest`, `/stats`, `/model/info`, `/index/clear`
+  * Uses the orchestration pipeline (`generation.rag_pipeline.RAGPipeline`) for
+    inference.
+
+* **Refactor (WIP)** – `eidetic_rag/backend/app/main.py`
+  * Domain-driven module layout with dependency-managed services and Pydantic
+    schemas. This backend is still being wired into the production pipeline.
 
 ## 🚀 Key Features
 
-### ✅ Modern Tech Stack
-- **Backend**: FastAPI, SQLAlchemy, ChromaDB, OpenAI/LangChain
-- **Frontend**: React 18, TypeScript, Material-UI, React Query
-- **DevOps**: Poetry, Black, isort, mypy, pre-commit
-- **Architecture**: Domain-driven design, dependency injection, async/await
+### Core capabilities
 
-### ✅ Advanced RAG Capabilities
-- **Multi-modal ingestion**: PDF, DOCX, TXT, HTML, Markdown
-- **Intelligent chunking**: Semantic-aware text splitting
-- **Vector search**: ChromaDB with FAISS indexing
-- **Persistent memory**: SQL-based memory with tagging
-- **Reflection system**: Hallucination detection and answer verification
-- **Adaptive retrieval**: Context-aware result ranking
-- **Local LLM Support**: Ollama integration for privacy and cost control
+* **Multi-format ingestion** – TXT, Markdown, HTML, and PDF via
+  `DocumentIngestor`.
+* **Configurable chunking** – Paragraph-aware splitting with overlap and
+  metadata capture.
+* **Semantic retrieval** – Persistent ChromaDB index with collection recovery
+  safeguards.
+* **LLM integration** – Local Ollama, Hugging Face endpoints, or mock mode via
+  `generation.generator.LLMGenerator`.
+* **Optional reflection** – Verification engine evaluates hallucination score
+  and can trigger regeneration or refusal.
 
-### ✅ Production Ready
-- **Health monitoring**: Comprehensive health checks
-- **Structured logging**: Loguru with configurable levels
-- **Error handling**: Graceful error recovery
-- **Configuration**: Environment-based settings
-- **Caching**: Multi-level caching (Redis + disk)
-- **Testing**: Comprehensive test coverage
+* **Persistent memory** – SQLite database managed through SQLAlchemy models for
+  storing past Q&A pairs.
+
+### Frontend
+
+* React 18 + TypeScript single-page app (Create React App) located in
+  `src/frontend/` with Material UI components.
+* Proxy configured to hit the FastAPI backend during development.
 
 ## 🛠️ Quick Start
 
 ### Prerequisites
-- Python 3.9+
-- Node.js 16+
-- Redis (optional, for caching)
-- **Ollama** (for local LLM) - Download from https://ollama.ai/
 
-### Ollama Setup (Local LLM)
+* Python 3.9+
+* Node.js 16+
+* (Optional) [Ollama](https://ollama.ai/) for local LLM inference
+
+### Backend setup (current pipeline)
+
 ```bash
-# Install Ollama
-# Visit https://ollama.ai/ and follow installation instructions
+# From the project root
+python -m venv .venv
+.venv\Scripts\activate  # On Windows
 
-# Pull a model (recommended: llama2 for general use)
-ollama pull llama2
+pip install -r requirements.txt
 
-# Alternative models
-ollama pull mistral     # Faster, good quality
-ollama pull codellama   # For code-related queries
-ollama pull llama2:13b  # More capable but slower
-
-# Start Ollama service
-ollama serve
+# Launch FastAPI
+python -m src.api.main
 ```
 
-The system is configured to use Ollama by default for local, private LLM generation.
+* API docs: http://localhost:8000/docs
+* RAG endpoints exposed under the root path.
 
-### Backend Setup
+### Backend setup (experimental refactor)
+
 ```bash
-# Install dependencies with Poetry (modern package management)
-poetry install
-
-# Set up environment
-cp .env.example .env
-# Edit .env with your settings
-
-# Run migrations (if using database features)
-poetry run alembic upgrade head
-
-# Start the server
-poetry run eidetic-rag
-# or
-poetry run uvicorn eidetic_rag.backend.app.main:app --reload
+# Optional: run the new service once dependencies are installed
+python -m uvicorn eidetic_rag.backend.app.main:app --reload
 ```
+The refactor currently boots with mock services until the orchestration layer is
+fully integrated.
 
-### Frontend Setup
+### Frontend setup
+
 ```bash
 cd src/frontend
-
-# Install dependencies
 npm install
-
-# Start development server
 npm start
-
-# Build for production
-npm run build
 ```
 
-### API Documentation
-Once running, visit:
-- **API Docs**: http://localhost:8000/docs
-- **Frontend**: http://localhost:3000
+The development server proxies API calls to <http://localhost:8000>.
 
-## 📁 Modern Project Structure Details
+## 📚 CLI Utilities
 
-### Backend Architecture
+`src/core/cli.py` exposes ingestion, reindex, inspect, and search commands.
+Example:
 
-#### Domain-Driven API Structure
-```
-app/api/v1/
-├── health/     # System health and monitoring
-├── queries/    # RAG query operations
-├── documents/  # Document ingestion and management
-└── memory/     # Persistent memory operations
-```
-
-#### Service Layer
-```
-app/services/
-├── rag_service.py      # Main RAG orchestration
-├── embedding_service.py # Text embeddings
-├── vector_service.py   # Vector operations
-└── generation_service.py # LLM integration
-```
-
-#### Configuration Management
-```python
-# config/settings.py - Centralized configuration
-from pydantic_settings import BaseSettings
-
-class Settings(BaseSettings):
-    PROJECT_NAME: str = "EideticRAG API"
-    OPENAI_API_KEY: str
-    DATABASE_URL: str = "sqlite:///./memory.db"
-
-    class Config:
-        env_file = ".env"
-```
-
-### Frontend Architecture
-
-#### Custom Hooks
-```typescript
-// src/frontend/src/hooks/useQuery.ts - RAG query hook
-export const useQuery = () => {
-  const [data, setData] = useState<QueryResponse | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const execute = useCallback(async (request: QueryRequest) => {
-    // Query logic with loading states
-  }, []);
-
-  return { data, loading, error, execute };
-};
-```
-
-#### Type-Safe API Service
-```typescript
-// src/frontend/src/services/api.ts - Modern API service
-class ApiService {
-  async query(request: QueryRequest): Promise<QueryResponse> {
-    const response = await this.client.post('/queries/', request);
-    return response.data;
-  }
-}
+```bash
+python -m src.core.cli ingest data/sample_documents/sample1.txt
+python -m src.core.cli search "What is machine learning?"
 ```
 
 ## 🧪 Testing
 
-### Backend Tests
+The `tests/` directory contains staged integration suites covering ingestion,
+retrieval, reflection, orchestration, and frontend smoke checks.
+
 ```bash
-# Run all tests
-poetry run pytest
-
-# Run with coverage
-poetry run pytest --cov=eidetic_rag
-
-# Run specific tests
-poetry run pytest tests/test_queries.py
+python -m pytest tests -v
 ```
 
-### Frontend Tests
-```bash
-cd src/frontend
+Individual stage modules (e.g., `tests/test_stage5.py`) exercise dedicated
+subsystems such as the reflection agent.
 
-# Run tests
-npm test
+## ⚙️ Configuration Notes
 
-# Run tests with coverage
-npm run test:coverage
-```
+* Environment variables for the legacy API are read via `python-dotenv` in
+  `src/api/main.py`. Override behaviour with:
+  * `RAG_GENERATOR_TYPE`, `RAG_MODEL_NAME`, `RAG_API_KEY`, `RAG_API_BASE`,
+    `RAG_TEMPERATURE`, `RAG_TOP_P`, `RAG_MAX_TOKENS`.
+* The new backend loads settings from `.env` using
+  `eidetic_rag.backend.config.settings.Settings`.
+* Memory persistence defaults to `./memory.db`. Delete the file to reset stored
+  conversations.
 
-## 🚀 Deployment
+## 🔄 Project Status
 
-### Docker Deployment
-```dockerfile
-# Dockerfile
-FROM python:3.11-slim
-WORKDIR /app
-COPY pyproject.toml poetry.lock ./
-RUN pip install poetry && poetry install --no-dev
-COPY . .
-CMD ["poetry", "run", "eidetic-rag"]
-```
-
-### Environment Variables
-```bash
-# .env
-OPENAI_API_KEY=your_key_here
-DATABASE_URL=postgresql://user:pass@localhost/db
-REDIS_URL=redis://localhost:6379
-DEBUG=false
-```
-
-## 📚 Best Practices Implemented
-
-### ✅ Code Quality
-- **Linting**: Black, isort, flake8, mypy
-- **Pre-commit**: Automated code formatting and checks
-- **Type hints**: Full type coverage
-- **Documentation**: Comprehensive docstrings
-
-### ✅ Architecture Patterns
-- **Dependency injection**: FastAPI dependency system
-- **Repository pattern**: Data access abstraction
-- **Service layer**: Business logic separation
-- **Configuration management**: Environment-based settings
-
-### ✅ Modern Development
-- **Async/await**: Full async support
-- **Connection pooling**: Efficient resource usage
-- **Health checks**: System monitoring
-- **Graceful shutdown**: Clean resource cleanup
-
-## 🔧 Development
-
-### Adding New Features
-
-#### Backend Feature
-1. Create domain module in `app/api/v1/`
-2. Add service in `app/services/`
-3. Update dependency injection
-4. Add tests in `tests/`
-
-#### Frontend Feature
-1. Create feature components in `components/features/`
-2. Add custom hooks in `hooks/`
-3. Update types in `types/`
-4. Add tests
-
-### Code Style
-```bash
-# Format Python code
-poetry run black .
-poetry run isort .
-
-# Format frontend code
-cd src/frontend && npm run lint:fix
-```
-
-## 📈 Performance
-
-### Optimizations Implemented
-- **Vector indexing**: FAISS for fast similarity search
-- **Connection pooling**: Efficient database connections
-- **Caching layers**: Multi-level caching strategy
-- **Async processing**: Non-blocking operations
-- **Batch processing**: Efficient bulk operations
-
-### Monitoring
-- **Health endpoints**: System status monitoring
-- **Performance metrics**: Query timing and throughput
-- **Error tracking**: Comprehensive error logging
-- **Resource usage**: Memory and CPU monitoring
+* **Stable**: Core ingestion, embedding, indexing, RAG pipeline, CLI, legacy
+  FastAPI API, React frontend, staged test harness.
+* **In progress**: Integration between the new FastAPI service (`eidetic_rag`)
+  and the production pipeline, expanded model metadata endpoints, streaming
+  responses.
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+1. Fork the repository.
+2. Create a feature branch.
+3. Make changes and add/adjust tests.
+4. Submit a pull request describing the affected pipeline stage(s).
 
 ## 📄 License
 
 This project is licensed under the MIT License.
-
----
-
-**Note**: This is a complete modernization using current best practices while maintaining backward compatibility with the existing frontend interface.

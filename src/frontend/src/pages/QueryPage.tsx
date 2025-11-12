@@ -31,6 +31,7 @@ import ReactMarkdown from 'react-markdown';
 import { queryAPI } from '../services/api';
 import ProvenancePanel from '../components/ProvenancePanel';
 import ChunkViewer from '../components/ChunkViewer';
+import WebSearchToggle from '../components/WebSearchToggle';
 import { GeneratorType, QueryRequest, QueryResponse } from '../types';
 
 interface TabPanelProps {
@@ -65,6 +66,12 @@ const QueryPage: React.FC = () => {
   const [modelName, setModelName] = useState<string>('llama3.2:1b');
   const [apiKey, setApiKey] = useState<string>('');
   const [apiBase, setApiBase] = useState<string>('');
+  const [webSearchEnabled, setWebSearchEnabled] = useState<boolean>(false);
+  const [searchStrategy, setSearchStrategy] = useState<'local_only' | 'web_only' | 'hybrid'>('hybrid');
+  const [useWikipedia, setUseWikipedia] = useState<boolean>(false);
+  const [useCaching, setUseCaching] = useState<boolean>(true);
+  const [useMemory, setUseMemory] = useState<boolean>(true);
+  const [useReflection, setUseReflection] = useState<boolean>(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +97,12 @@ const QueryPage: React.FC = () => {
 
       const request: QueryRequest = {
         query,
+        use_web_search: webSearchEnabled,
+        use_wikipedia: webSearchEnabled ? useWikipedia : false,
+        search_strategy: searchStrategy,
+        use_cache: useCaching,
+        use_memory: useMemory,
+        use_reflection: useReflection,
         generator: {
           type: generatorType,
           model: modelName.trim() || undefined,
@@ -232,39 +245,92 @@ const QueryPage: React.FC = () => {
 
             <Divider sx={{ my: 1 }} />
 
-            <TextField
-              fullWidth
-              multiline
-              rows={3}
-              variant="outlined"
-              placeholder="Ask anything..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              disabled={loading}
-            />
-            <Stack direction="row" spacing={2}>
-              <Button
-                type="submit"
-                variant="contained"
-                startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
-                disabled={loading || !query.trim()}
-              >
-                {loading ? 'Processing...' : 'Send'}
-              </Button>
-              {result && (
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="subtitle2" gutterBottom>Advanced Features</Typography>
+              <Stack direction="row" spacing={2} flexWrap="wrap">
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <input
+                    type="checkbox"
+                    id="cache-toggle"
+                    checked={useCaching}
+                    onChange={(e) => setUseCaching(e.target.checked)}
+                    disabled={loading}
+                  />
+                  <label htmlFor="cache-toggle" style={{ cursor: 'pointer', fontSize: '0.9rem' }}>
+                    Enable Caching
+                  </label>
+                </Stack>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <input
+                    type="checkbox"
+                    id="memory-toggle"
+                    checked={useMemory}
+                    onChange={(e) => setUseMemory(e.target.checked)}
+                    disabled={loading}
+                  />
+                  <label htmlFor="memory-toggle" style={{ cursor: 'pointer', fontSize: '0.9rem' }}>
+                    Enable Memory
+                  </label>
+                </Stack>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <input
+                    type="checkbox"
+                    id="reflection-toggle"
+                    checked={useReflection}
+                    onChange={(e) => setUseReflection(e.target.checked)}
+                    disabled={loading}
+                  />
+                  <label htmlFor="reflection-toggle" style={{ cursor: 'pointer', fontSize: '0.9rem' }}>
+                    Enable Reflection
+                  </label>
+                </Stack>
+              </Stack>
+            </Box>
+
+            <Stack spacing={2}>
+              <WebSearchToggle
+                enabled={webSearchEnabled}
+                strategy={searchStrategy}
+                useWikipedia={useWikipedia}
+                onEnabledChange={setWebSearchEnabled}
+                onStrategyChange={setSearchStrategy}
+                onWikipediaChange={setUseWikipedia}
+                disabled={loading}
+              />
+
+              <TextField
+                fullWidth
+                multiline
+                rows={3}
+                variant="outlined"
+                placeholder="Ask anything..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                disabled={loading}
+              />
+              <Stack direction="row" spacing={2}>
                 <Button
-                  variant="outlined"
-                  startIcon={<RefreshIcon />}
-                  onClick={() => {
-                    setResult(null);
-                    setQuery('');
-                  }}
-                  disabled={loading}
+                  type="submit"
+                  variant="contained"
+                  startIcon={loading ? <CircularProgress size={20} /> : <SendIcon />}
+                  disabled={loading || !query.trim()}
                 >
-                  New Query
+                  {loading ? 'Processing...' : 'Send'}
                 </Button>
-              )}
-            </Stack>
+                {result && (
+                  <Button
+                    variant="outlined"
+                    startIcon={<RefreshIcon />}
+                    onClick={() => {
+                      setResult(null);
+                      setQuery('');
+                    }}
+                    disabled={loading}
+                  >
+                    New Query
+                  </Button>
+                )}
+              </Stack>
           </Stack>
         </form>
       </Paper>
@@ -375,6 +441,21 @@ const QueryPage: React.FC = () => {
                   <Typography variant="body2">
                     <strong>Memory:</strong> {result.metadata?.memory_enabled ? 'Enabled' : 'Disabled'}
                   </Typography>
+                  {result.metadata?.web_search_enabled !== undefined && (
+                    <Typography variant="body2">
+                      <strong>Web Search:</strong> {result.metadata.web_search_enabled ? 'Enabled' : 'Disabled'}
+                    </Typography>
+                  )}
+                  {result.metadata?.search_strategy && (
+                    <Typography variant="body2">
+                      <strong>Search Strategy:</strong> {result.metadata.search_strategy}
+                    </Typography>
+                  )}
+                  {result.metadata?.num_web_results !== undefined && (
+                    <Typography variant="body2">
+                      <strong>Web Results:</strong> {result.metadata.num_web_results}
+                    </Typography>
+                  )}
                 </Stack>
               </CardContent>
             </Card>

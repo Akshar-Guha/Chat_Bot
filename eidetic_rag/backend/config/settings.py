@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # Server settings
     HOST: str = "0.0.0.0"
     PORT: int = 8000
-    DEBUG: bool = True
+    DEBUG: bool = False  # Disable reload for stability
 
     # CORS settings
     ALLOWED_ORIGINS: List[str] = ["*"]
@@ -35,6 +35,14 @@ class Settings(BaseSettings):
     DEFAULT_MODEL_TYPE: str = "mock"
     DEFAULT_MODEL_NAME: str = "gpt-3.5-turbo"
     OPENAI_API_KEY: Optional[str] = None
+    
+    # Optional RAG-specific settings (from .env)
+    RAG_GENERATOR_TYPE: Optional[str] = None
+    RAG_MODEL_NAME: Optional[str] = None
+    RAG_DEVICE: Optional[str] = None
+    RAG_TEMPERATURE: Optional[float] = None
+    RAG_TOP_P: Optional[float] = None
+    RAG_MAX_TOKENS: Optional[int] = None
 
     # Database settings
     DATABASE_URL: str = "sqlite:///./memory.db"
@@ -45,6 +53,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = False
+        extra = "allow"  # Allow extra fields from .env
 
 
 # Global settings instance

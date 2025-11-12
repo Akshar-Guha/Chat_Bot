@@ -82,7 +82,7 @@ const DocumentManager: React.FC = () => {
     setError(null);
 
     try {
-      const response = await uploadDocument(selectedFile, (progress) => {
+      const response = await uploadDocument(selectedFile, (progress: number) => {
         setUploadProgress(progress);
       });
 
@@ -197,12 +197,13 @@ const DocumentManager: React.FC = () => {
                 <TableCell>Chunks</TableCell>
                 <TableCell>Upload Date</TableCell>
                 <TableCell>Actions</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {documents.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} align="center">
+                  <TableCell colSpan={9} align="center">
                     <Typography variant="body2" color="text.secondary" sx={{ py: 4 }}>
                       No documents uploaded yet. Click "Upload Document" to get started.
                     </Typography>
@@ -210,12 +211,12 @@ const DocumentManager: React.FC = () => {
                 </TableRow>
               ) : (
                 documents.map((doc) => (
-                  <TableRow key={doc.doc_id}>
+                  <TableRow key={doc.doc_id} hover>
                     <TableCell>{getFileIcon(doc.format)}</TableCell>
-                    <TableCell>
+                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       <Typography variant="body2">{doc.filename}</Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       <Typography variant="caption" sx={{ fontFamily: 'monospace' }}>
                         {doc.doc_id}
                       </Typography>

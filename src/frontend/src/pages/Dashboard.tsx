@@ -3,7 +3,7 @@ import {
   Box,
   Paper,
   Typography,
-  Grid,
+  Grid as MuiGrid, // Rename Grid to MuiGrid to avoid potential conflicts
   Card,
   CardContent,
   Stack,
@@ -166,8 +166,8 @@ const Dashboard: React.FC = () => {
         </Typography>
       </Paper>
 
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <MuiGrid container spacing={3} sx={{ mb: 3 }}>
+        <MuiGrid item xs={12} sm={6} md={3}>
           <MetricCard
             title="Total Chunks"
             value={stats.index.total_chunks}
@@ -175,8 +175,8 @@ const Dashboard: React.FC = () => {
             icon={<StorageIcon />}
             color="#2563eb"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </MuiGrid>
+        <MuiGrid item xs={12} sm={6} md={3}>
           <MetricCard
             title="Cache Hit Rate"
             value={`${(stats.cache.hit_rate * 100).toFixed(1)}%`}
@@ -184,8 +184,8 @@ const Dashboard: React.FC = () => {
             icon={<SpeedIcon />}
             color="#10b981"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </MuiGrid>
+        <MuiGrid item xs={12} sm={6} md={3}>
           <MetricCard
             title="Total Memories"
             value={stats.memory.total_memories}
@@ -193,8 +193,8 @@ const Dashboard: React.FC = () => {
             icon={<PsychologyIcon />}
             color="#7c3aed"
           />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        </MuiGrid>
+        <MuiGrid item xs={12} sm={6} md={3}>
           <MetricCard
             title="Avg Query Time"
             value={`${stats.performance?.avg_query_time_ms || 250}ms`}
@@ -202,11 +202,11 @@ const Dashboard: React.FC = () => {
             icon={<TrendingUpIcon />}
             color="#f59e0b"
           />
-        </Grid>
-      </Grid>
+        </MuiGrid>
+      </MuiGrid>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
+      <MuiGrid container spacing={3}>
+        <MuiGrid item xs={12} md={8}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Query Volume & Performance
@@ -236,9 +236,9 @@ const Dashboard: React.FC = () => {
               </LineChart>
             </ResponsiveContainer>
           </Paper>
-        </Grid>
+        </MuiGrid>
 
-        <Grid item xs={12} md={4}>
+        <MuiGrid item xs={12} md={4}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Query Intent Distribution
@@ -263,9 +263,9 @@ const Dashboard: React.FC = () => {
               </PieChart>
             </ResponsiveContainer>
           </Paper>
-        </Grid>
+        </MuiGrid>
 
-        <Grid item xs={12} md={6}>
+        <MuiGrid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Cache Performance (24h)
@@ -286,9 +286,9 @@ const Dashboard: React.FC = () => {
               </AreaChart>
             </ResponsiveContainer>
           </Paper>
-        </Grid>
+        </MuiGrid>
 
-        <Grid item xs={12} md={6}>
+        <MuiGrid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               System Health
@@ -341,8 +341,8 @@ const Dashboard: React.FC = () => {
               </Stack>
             </Stack>
           </Paper>
-        </Grid>
-      </Grid>
+        </MuiGrid>
+      </MuiGrid>
     </Box>
   );
 };

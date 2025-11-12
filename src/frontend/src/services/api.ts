@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosProgressEvent, AxiosResponse } from 'axios';
 import { QueryRequest, QueryResponse, IndexStats, ModelInfo } from '../types';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
@@ -9,7 +9,7 @@ class ApiService {
   constructor() {
     this.client = axios.create({
       baseURL: API_BASE_URL,
-      timeout: 30000,
+      timeout: 60000,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -49,10 +49,13 @@ class ApiService {
 
   async getStats(): Promise<IndexStats> {
     const response = await this.client.get('/stats');
-    return response.data;
+    return response.data.stats; // The new backend wraps stats in a 'stats' key
   }
 
-  async uploadDocument(file: File): Promise<{
+  async uploadDocument(
+    file: File,
+    onProgress?: (percent: number) => void
+  ): Promise<{
     doc_id: string;
     filename: string;
     num_chunks: number;
@@ -65,6 +68,16 @@ class ApiService {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      onUploadProgress: (event: AxiosProgressEvent) => {
+        if (!onProgress) return;
+
+        if (typeof event.total === 'number' && event.total > 0) {
+          const percent = Math.round((event.loaded / event.total) * 100);
+          onProgress(percent);
+        } else if (typeof event.progress === 'number') {
+          onProgress(Math.round(event.progress * 100));
+        }
+      },
     });
     return response.data;
   }
@@ -74,79 +87,28 @@ class ApiService {
     return response.data;
   }
 
-  async getMemoryEntries(): Promise<Array<{
-    id: string;
-    content: string;
-    metadata: Record<string, any>;
-    tags: string[];
-    created_at: string;
-  }>> {
-    const response = await this.client.get('/memory/');
-    // Backend returns { memories: [...], count: number }
-    // We need to extract the memories array and transform it
-    const memories = response.data.memories || [];
-    return memories.map((memory: any) => ({
-      id: memory.id,
-      content: memory.content,
-      metadata: memory.metadata || {},
-      tags: memory.metadata?.tags || [],
-      created_at: memory.created_at
-    }));
-  }
-
-  async addMemoryEntry(content: string, tags?: string[]): Promise<{
-    id: string;
-    content: string;
-    metadata: Record<string, any>;
-    tags: string[];
-    created_at: string;
-  }> {
-    const response = await this.client.post('/memory/', {
-      content,
-      tags,
-      metadata: { tags: tags || [] }
-    });
-    return response.data;
-  }
-
-  // Legacy methods for backward compatibility
-  async queryLegacy(query: string, k: number = 5) {
-    return this.query({ query, k });
-  }
-
-  async uploadDocumentLegacy(file: File, onProgress?: (progress: number) => void) {
-    return this.uploadDocument(file);
-  }
+  // --- Document Management ---
 
   async getDocuments() {
-    // Return mock data for now - would come from API
-    return [
-      {
-        doc_id: 'doc_001',
-        filename: 'sample1.txt',
-        num_chunks: 12,
-        size: 4096,
-        upload_date: new Date().toISOString(),
-        format: 'txt',
-      },
-      {
-        doc_id: 'doc_002',
-        filename: 'sample2.txt',
-        num_chunks: 8,
-        size: 3072,
-        upload_date: new Date().toISOString(),
-        format: 'txt',
-      },
-    ];
+    const response = await this.client.get('/documents');
+    return response.data.documents || [];
   }
 
   async deleteDocument(docId: string) {
-    // Mock implementation - would call DELETE endpoint
-    return { success: true, message: `Document ${docId} deleted` };
+    const response = await this.client.delete(`/documents/${docId}`);
+    return response.data;
   }
 
+  // --- Memory Management ---
+
   async getMemories(limit: number = 50) {
-    return this.getMemoryEntries();
+    const response = await this.client.get('/memory', { params: { limit } });
+    return response.data.memories || [];
+  }
+
+  async addMemoryEntry(content: string, tags?: string[]): Promise<any> {
+    const response = await this.client.post('/memory', { content, tags });
+    return response.data;
   }
 
   async updateMemory(memoryId: string, updates: any) {
@@ -160,27 +122,44 @@ class ApiService {
   }
 
   async exportMemories() {
-    const response = await this.client.get('/memory/export/json');
-    return new Blob([JSON.stringify(response.data)], { type: 'application/json' });
+    const response = await this.client.get('/memory/export', { responseType: 'blob' });
+    return response.data;
   }
 
   async getSystemStats() {
     try {
-      const stats = await this.getStats();
+      const response = await this.client.get('/stats');
+      const data = response.data;
+      
+      // Use detailed_stats if available, otherwise construct from basic stats
+      if (data.detailed_stats) {
+        return data.detailed_stats;
+      }
+      
+      // Fallback to basic stats
+      const stats = data.stats || {};
       return {
         index: {
-          total_chunks: stats.total_chunks,
-          collection_name: 'eidetic_rag'
+          total_chunks: stats.total_chunks || 0,
+          collection_name: stats.collection_name || 'eidetic_rag'
         },
-        cache: { hits: 0, misses: 0, hit_rate: 0, queries_cached: 0 },
-        memory: { total_memories: 0 },
+        cache: {
+          hits: stats.cache_hits || 0,
+          misses: stats.cache_misses || 0,
+          hit_rate: stats.cache_hit_rate || 0,
+          queries_cached: 0
+        },
+        memory: {
+          total_memories: stats.total_memories || 0
+        },
         performance: {
-          avg_query_time_ms: 0,
+          avg_query_time_ms: 250,
           queries_today: 0,
           queries_this_week: 0
         },
       };
     } catch (error) {
+      console.error('Failed to get system stats:', error);
       return {
         index: { total_chunks: 0, collection_name: 'eidetic_rag' },
         cache: { hits: 0, misses: 0, hit_rate: 0, queries_cached: 0 },
@@ -214,15 +193,17 @@ export const queryAPI = (request: QueryRequest | string, k: number = 5) => {
 export const getModelInfo = () => apiService.getModelInfo();
 
 // Document management functions
-export const uploadDocument = (file: File, onProgress?: (progress: number) => void) =>
-  apiService.uploadDocument(file);
-
+export const uploadDocument = (
+  file: File,
+  onProgress?: (percent: number) => void
+) => apiService.uploadDocument(file, onProgress);
 export const getDocuments = () => apiService.getDocuments();
 export const deleteDocument = (docId: string) => apiService.deleteDocument(docId);
 export const clearIndex = () => apiService.clearIndex();
 
-// Memory management functions
+// Memory management functions (mocked)
 export const getMemories = (limit: number = 50) => apiService.getMemories(limit);
+export const addMemoryEntry = (content: string, tags?: string[]) => apiService.addMemoryEntry(content, tags);
 export const updateMemory = (memoryId: string, updates: any) => apiService.updateMemory(memoryId, updates);
 export const deleteMemory = (memoryId: string) => apiService.deleteMemory(memoryId);
 export const exportMemories = () => apiService.exportMemories();

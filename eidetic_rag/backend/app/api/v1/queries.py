@@ -20,12 +20,16 @@ async def query(
     Process a query through the RAG pipeline
 
     Returns answer with retrieved chunks and provenance information.
+    Supports web search integration with configurable strategies.
     """
     try:
         result = await rag_service.query(
             query_text=request.query,
             k=request.k,
-            filters=request.filters
+            filters=request.filters,
+            web_search_enabled=request.use_web_search,
+            include_wikipedia=request.use_wikipedia,
+            search_strategy=request.search_strategy
         )
         return QueryResponse(**result)
     except Exception as e:

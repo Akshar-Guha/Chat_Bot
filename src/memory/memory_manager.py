@@ -499,6 +499,18 @@ class MemoryManager:
             conv_session.memory_ids = memory_ids
             conv_session.query_count += 1
     
+    def get_all_memories(self, limit: int = 50) -> List[Dict]:
+        """
+        Get all memories (wrapper for list_memories for API compatibility)
+        
+        Args:
+            limit: Maximum number of memories to return
+        
+        Returns:
+            List of memory dictionaries
+        """
+        return self.list_memories(limit=limit)
+    
     def _extract_keywords(self, text: str) -> List[str]:
         """Extract keywords from text (simple version)"""
         # Simple keyword extraction

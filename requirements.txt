@@ -1,7 +1,6 @@
 # Core dependencies
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-python-dotenv==0.21.1
 pydantic==2.9.2            # 2.9.x provides prebuilt cp313 wheels
 pydantic-settings==2.1.0
 python-multipart==0.0.6
@@ -35,9 +34,10 @@ langchain==0.1.0
 langchain-community==0.0.13
 tiktoken==0.7.0 ; platform_system != "Windows"  # optional; requires Rust toolchain on Windows
 ollama==0.2.1
+aiohttp==3.9.1  # Async HTTP client for web search
 
 # Database
-sqlalchemy==2.0.23
+sqlalchemy==2.0.36
 alembic==1.13.1
 psycopg2-binary==2.9.9 ; platform_system != "Windows"
 psycopg[binary]==3.2.12 ; platform_system == "Windows"

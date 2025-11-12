@@ -19,6 +19,18 @@ class QueryRequest(BaseModel):
         default=None,
         description="Metadata filters for retrieval"
     )
+    use_web_search: bool = Field(
+        default=False,
+        description="Enable web search integration"
+    )
+    use_wikipedia: bool = Field(
+        default=False,
+        description="Include Wikipedia results when web search is enabled"
+    )
+    search_strategy: str = Field(
+        default="hybrid",
+        description="Search strategy: local_only, web_only, or hybrid"
+    )
 
 
 class QueryResponse(BaseModel):

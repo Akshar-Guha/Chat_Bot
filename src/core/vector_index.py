@@ -145,13 +145,19 @@ class VectorIndex:
             # Prepare metadata
             metadatas = []
             for chunk in batch:
+                # Merge document-level metadata into each chunk
                 metadata = {
                     'doc_id': chunk.doc_id,
                     'chunk_id': chunk.chunk_id,
                     'start_char': str(chunk.metadata.get('start_char', 0)),
                     'end_char': str(chunk.metadata.get('end_char', 0)),
                     'chunk_index': str(chunk.metadata.get('chunk_index', 0)),
-                    'word_count': str(chunk.metadata.get('word_count', 0))
+                    'word_count': str(chunk.metadata.get('word_count', 0)),
+                    # Document-level metadata (for /documents endpoint)
+                    'source': chunk.metadata.get('source', chunk.doc_id),
+                    'file_size': chunk.metadata.get('file_size', chunk.metadata.get('size', 0)),
+                    'upload_date': chunk.metadata.get('upload_date', ''),
+                    'format': chunk.metadata.get('format', 'txt'),
                 }
                 metadatas.append(metadata)
             
@@ -300,11 +306,63 @@ class VectorIndex:
         self.doc_count = 0
         print(f"Cleared index: {self.collection_name}")
     
+    def get_all_documents(self) -> List[Dict]:
+        """
+        Get all unique documents in the index with metadata
+        
+        Returns:
+            List of document metadata dictionaries
+        """
+        try:
+            # Get all items from collection
+            results = self.collection.get()
+            
+            if not results or not results.get('metadatas'):
+                return []
+            
+            # Group by doc_id and aggregate metadata
+            docs_map = {}
+            for metadata in results['metadatas']:
+                if not metadata:
+                    continue
+                    
+                doc_id = metadata.get('doc_id')
+                if not doc_id:
+                    continue
+                
+                if doc_id not in docs_map:
+                    docs_map[doc_id] = {
+                        'doc_id': doc_id,
+                        'filename': metadata.get('source', 'Unknown'),
+                        'num_chunks': 0,
+                        'size': metadata.get('file_size', 0),
+                        'upload_date': metadata.get('upload_date', ''),
+                        'format': metadata.get('format', 'txt')
+                    }
+                
+                docs_map[doc_id]['num_chunks'] += 1
+            
+            # Convert to list
+            documents = list(docs_map.values())
+            return documents
+            
+        except Exception as e:
+            print(f"Error getting all documents: {e}")
+            return []
+    
     def get_stats(self) -> Dict:
         """Get index statistics"""
+        # Count unique documents
+        try:
+            documents = self.get_all_documents()
+            total_documents = len(documents)
+        except Exception:
+            total_documents = 0
+        
         return {
             'collection_name': self.collection_name,
             'total_chunks': self.doc_count,
+            'total_documents': total_documents,
             'embedding_space': 'cosine'
         }
     

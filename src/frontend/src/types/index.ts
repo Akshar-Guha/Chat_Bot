@@ -19,6 +19,12 @@ export interface QueryRequest {
   k?: number;
   filters?: Record<string, any>;
   generator?: GeneratorSettings;
+  use_web_search?: boolean;
+  use_wikipedia?: boolean;
+  search_strategy?: 'local_only' | 'web_only' | 'hybrid';
+  use_cache?: boolean;
+  use_memory?: boolean;
+  use_reflection?: boolean;
 }
 
 export interface SpikeInfo {
@@ -45,10 +51,15 @@ export interface VerificationMetadata {
 }
 
 export interface Chunk {
-  chunk_id: string;
-  text: string;
-  score: number;
-  metadata: ChunkMetadata;
+  chunk_id?: string;
+  text?: string;
+  score?: number;
+  metadata?: ChunkMetadata;
+  // Web search result fields
+  title?: string;
+  url?: string;
+  content?: string;
+  source?: string;
 }
 
 export interface ChunkMetadata {
@@ -84,6 +95,9 @@ export interface QueryMetadata {
   cached?: boolean;
   reflection_enabled?: boolean;
   memory_enabled?: boolean;
+  web_search_enabled?: boolean;
+  search_strategy?: string;
+  num_web_results?: number;
 }
 
 export interface ModelInfo {

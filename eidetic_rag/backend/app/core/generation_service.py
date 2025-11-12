@@ -5,15 +5,16 @@ Generation service for LLM operations
 from typing import Optional
 from pathlib import Path
 import sys
+import asyncio
 
 # Add parent to path to import core modules
 src_path = Path(__file__).parent.parent.parent.parent.parent / "src"
 sys.path.insert(0, str(src_path))
 
 try:
-    from generation.generator import Generator
+    from generation.generator import LLMGenerator
 except ImportError:
-    Generator = None
+    LLMGenerator = None
 
 
 class GenerationService:
@@ -25,50 +26,64 @@ class GenerationService:
         self.model_name = model_name
         self.api_key = api_key
         self.temperature = temperature
-        self.generator: Generator = None
+        self.generator = None
 
     async def initialize(self) -> None:
         """Initialize the generation service"""
-        if Generator:
-            self.generator = Generator(
+        if LLMGenerator:
+            self.generator = LLMGenerator(
                 model_type=self.model_type,
                 model_name=self.model_name,
                 api_key=self.api_key,
                 temperature=self.temperature
             )
         else:
-            print("Warning: Generator not available")
+            print("Warning: LLMGenerator not available")
 
-    async def generate(self, prompt: str, context: str = "", **kwargs) -> str:
+    async def generate(self, prompt: str, max_tokens: int = 500, 
+                      temperature: float = None, **kwargs) -> str:
         """Generate text using the LLM"""
         if not self.generator:
             # Fallback response if generator not available
-            return f"Mock response for prompt: {prompt[:100]}..."
+            return f"Mock response: The system is processing your query. Please ensure Ollama is running or configure a different LLM backend."
 
-        # For now, use the prompt directly since the Generator expects query + chunks
-        # In a full implementation, we'd extract query and context and convert to chunks format
-        mock_query = prompt.split('\n\n')[0].replace('Query: ', '') if 'Query: ' in prompt else prompt
+        # Parse prompt to extract query and context
+        import re
+        parts = prompt.split('\n\nContext:\n')
+        if len(parts) >= 2:
+            query = parts[0].replace('Query: ', '').strip()
+            context_text = parts[1]
+        else:
+            query = prompt
+            context_text = ""
+
+        # Build chunks from context
         mock_chunks = []
-
-        # Extract chunks from context if available
-        if context:
-            import re
-            # Simple parsing - in real implementation this would be more sophisticated
-            chunk_matches = re.findall(r'\[Chunk \d+\]\s*(.*?)(?=\[Chunk \d+\]|\Z)', context, re.DOTALL)
-            for i, chunk_text in enumerate(chunk_matches):
+        if context_text:
+            # Extract chunks - handle both local and web results
+            chunk_matches = re.findall(
+                r'\[(Chunk|Web Result) (\d+)\](.*?)(?=\[(?:Chunk|Web Result) \d+\]|\Z)', 
+                context_text, 
+                re.DOTALL
+            )
+            for chunk_type, idx, chunk_text in chunk_matches:
                 mock_chunks.append({
-                    'chunk_id': f'chunk_{i}',
+                    'chunk_id': f'{chunk_type.lower().replace(" ", "_")}_{idx}',
                     'text': chunk_text.strip(),
-                    'score': 0.9 - (i * 0.1),  # Decreasing scores
-                    'metadata': {'doc_id': 'mock_doc', 'chunk_index': i}
+                    'score': 0.9 - (int(idx) * 0.05),
+                    'metadata': {'source': 'web' if 'Web' in chunk_type else 'local'}
                 })
 
-        result = await asyncio.get_event_loop().run_in_executor(
-            None, self.generator.generate, mock_query, mock_chunks
-        )
-
-        # Return the answer from the result
-        return result.answer if hasattr(result, 'answer') else str(result)
+        # Generate using LLMGenerator
+        try:
+            result = await asyncio.get_event_loop().run_in_executor(
+                None, self.generator.generate, query, mock_chunks
+            )
+            # Return the answer from the result
+            return result.answer if hasattr(result, 'answer') else str(result)
+        except Exception as e:
+            print(f"Generation error: {e}")
+            return f"I apologize, but I encountered an error generating a response. Please check that your LLM backend (Ollama) is running. Error: {str(e)}"
 
     async def cleanup(self) -> None:
         """Cleanup resources"""

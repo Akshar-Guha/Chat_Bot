@@ -2,7 +2,7 @@
 Vector service for managing vector operations
 """
 
-from typing import List
+from typing import List, Dict, Any
 from pathlib import Path
 import sys
 import asyncio
