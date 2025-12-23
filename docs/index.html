@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EideticRAG - Privacy-First Local AI Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">🧠</span>
+                <span class="logo-text">EideticRAG</span>
+            </a>
+            <div class="nav-links">
+                <a href="#benefits">Benefits</a>
+                <a href="#stats-for-nerds">Stats for Nerds</a>
+                <a href="#installation">Quick Start</a>
+                <a href="#fine-tuning">Fine-Tuning</a>
+                <a href="https://github.com/Akshar-Guha/Chat_Bot" class="btn-github" target="_blank">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge animate-fade-in">
+                <span class="badge-dot"></span>
+                100% Local • Zero Cloud • Your Data Stays Yours
+            </div>
+            <h1 class="hero-title animate-slide-up">
+                Your Personal AI.<br>
+                <span class="gradient-text">No Filters. No Limits.</span>
+            </h1>
+            <p class="hero-subtitle animate-slide-up delay-1">
+                A private chatbot that runs entirely on your computer. Fine-tune it with your own data. Get uncensored, unrestricted responses. No subscriptions. No data harvesting.
+            </p>
+            <div class="hero-buttons animate-slide-up delay-2">
+                <a href="#installation" class="btn btn-primary">
+                    <span>Get Started Free</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#benefits" class="btn btn-secondary">
+                    <span>See Benefits</span>
+                </a>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 1: BENEFITS (For Regular Users)
+         ============================================ -->
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Why Go Local?</span>
+                <h2 class="section-title">What You Get with<br><span class="gradient-text">EideticRAG</span></h2>
+                <p class="section-subtitle">Built for people who value privacy, freedom, and control over their AI.</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card highlight">
+                    <div class="benefit-icon">🔓</div>
+                    <h3>Uncensored Responses</h3>
+                    <p>Fine-tune the model on your own data without corporate restrictions. Get direct, unfiltered answers to your questions—no more "I can't help with that" messages.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Complete Privacy</h3>
+                    <p>Your conversations never leave your computer. No data sent to OpenAI, Google, or anyone else. Perfect for sensitive documents, personal journals, or confidential work.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Zero Subscription Costs</h3>
+                    <p>No $20/month ChatGPT Plus. No API bills that spike unexpectedly. One-time setup, unlimited usage forever. Your electricity, your AI.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📚</div>
+                    <h3>Your Documents, Searchable</h3>
+                    <p>Upload your PDFs, notes, research papers, or personal files. Ask questions about them in natural language. The AI actually reads YOUR documents.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌐</div>
+                    <h3>Works Offline</h3>
+                    <p>No internet required after setup. Use it on airplanes, in remote locations, or when your WiFi dies. Your AI is always available.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Train It Your Way</h3>
+                    <p>Fine-tune the model to speak like you, understand your industry jargon, or focus on topics you care about. Make it truly personal.</p>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-section">
+                <h3 class="comparison-title">EideticRAG vs Cloud Chatbots</h3>
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <div class="comparison-cell">Feature</div>
+                        <div class="comparison-cell">ChatGPT / Claude</div>
+                        <div class="comparison-cell featured">EideticRAG</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Your data sent to servers</div>
+                        <div class="comparison-cell bad">Yes ❌</div>
+                        <div class="comparison-cell good">Never ✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Monthly cost</div>
+                        <div class="comparison-cell bad">$20+/month</div>
+                        <div class="comparison-cell good">$0</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Content restrictions</div>
+                        <div class="comparison-cell bad">Heavy filtering</div>
+                        <div class="comparison-cell good">You control</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Search your private docs</div>
+                        <div class="comparison-cell bad">Limited/No</div>
+                        <div class="comparison-cell good">Unlimited ✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Fine-tune on your data</div>
+                        <div class="comparison-cell bad">Not possible</div>
+                        <div class="comparison-cell good">Full control ✓</div>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comparison-cell">Works offline</div>
+                        <div class="comparison-cell bad">No</div>
+                        <div class="comparison-cell good">Yes ✓</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 2: STATS FOR NERDS (Technical Details)
+         ============================================ -->
+    <section class="stats-for-nerds" id="stats-for-nerds">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Stats for Nerds 🤓</span>
+                <h2 class="section-title">Technical <span class="gradient-text">Deep Dive</span></h2>
+                <p class="section-subtitle">Complete technical breakdown for developers. All values extracted from actual source code.</p>
+            </div>
+
+            <!-- Architecture Diagram -->
+            <div class="arch-section">
+                <h3 class="subsection-title">System Architecture</h3>
+                <div class="arch-diagram">
+                    <div class="arch-layer" data-layer="input">
+                        <div class="layer-label">📥 Document Ingestion Layer</div>
+                        <div class="arch-nodes">
+                            <div class="arch-node">
+                                <span class="node-label">File Parsers</span>
+                                <span class="node-detail">pypdf, python-docx, txt</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Text Chunker</span>
+                                <span class="node-detail">512 tokens, 50 overlap*</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Metadata Extractor</span>
+                                <span class="node-detail">Filename, page, position</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer" data-layer="embedding">
+                        <div class="layer-label">🧮 Embedding Layer</div>
+                        <div class="arch-nodes">
+                            <div class="arch-node featured">
+                                <span class="node-label">SentenceTransformers</span>
+                                <span class="node-detail">all-MiniLM-L6-v2 (384 dim)</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Embedding Cache</span>
+                                <span class="node-detail">Disk-based, LRU eviction</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Batch Processing</span>
+                                <span class="node-detail">32 chunks per batch*</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer" data-layer="storage">
+                        <div class="layer-label">💾 Vector Storage Layer</div>
+                        <div class="arch-nodes">
+                            <div class="arch-node featured">
+                                <span class="node-label">ChromaDB</span>
+                                <span class="node-detail">HNSW index, L2 distance</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">SQLite Metadata</span>
+                                <span class="node-detail">SQLAlchemy ORM</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Persistent Storage</span>
+                                <span class="node-detail">./data/chroma_db/</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer" data-layer="retrieval">
+                        <div class="layer-label">🔍 Retrieval Layer</div>
+                        <div class="arch-nodes">
+                            <div class="arch-node">
+                                <span class="node-label">Intent Classifier</span>
+                                <span class="node-detail">7 types: factual, comparative, causal, procedural, opinion, code, unknown</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Query Expansion</span>
+                                <span class="node-detail">Entity extraction + synonyms</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">MMR Diversification</span>
+                                <span class="node-detail">λ=0.7 (from code)</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Multi-Hop Retrieval</span>
+                                <span class="node-detail">Iterative refinement</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer" data-layer="generation">
+                        <div class="layer-label">🧠 Generation Layer</div>
+                        <div class="arch-nodes">
+                            <div class="arch-node featured">
+                                <span class="node-label">Ollama + Llama 3.2 1B</span>
+                                <span class="node-detail">REST API, localhost:11434</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Prompt Templates</span>
+                                <span class="node-detail">System + Context + Query</span>
+                            </div>
+                            <div class="arch-node">
+                                <span class="node-label">Reflection Agent</span>
+                                <span class="node-detail">max_iterations=3, threshold=0.3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">↓</div>
+                    <div class="arch-layer" data-layer="output">
+                        <div class="layer-label">✅ Output</div>
+                        <div class="arch-nodes">
+                            <div class="arch-node success">
+                                <span class="node-label">Verified Answer</span>
+                                <span class="node-detail">With source citations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DATA FLOW DIAGRAM - Separate Section -->
+            <div class="dataflow-section">
+                <h3 class="subsection-title">Data Flow Diagrams</h3>
+                
+                <!-- Query Processing Flow -->
+                <div class="flow-diagram">
+                    <h4 class="flow-title">🔍 Query Processing Pipeline</h4>
+                    <div class="flow-container">
+                        <div class="flow-step">
+                            <div class="flow-icon">💬</div>
+                            <div class="flow-content">
+                                <span class="flow-label">User Query</span>
+                                <span class="flow-data">"What is RAG?"</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🎯</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Intent Classification</span>
+                                <span class="flow-data">type: FACTUAL, confidence: 0.85</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🧮</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Query Embedding</span>
+                                <span class="flow-data">384-dim vector (MiniLM)</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🔮</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Vector Search</span>
+                                <span class="flow-data">ChromaDB HNSW, k=5</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">📊</div>
+                            <div class="flow-content">
+                                <span class="flow-label">MMR Diversification</span>
+                                <span class="flow-data">λ=0.7, dedup results</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">📝</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Context Assembly</span>
+                                <span class="flow-data">System + Chunks + Query</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🧠</div>
+                            <div class="flow-content">
+                                <span class="flow-label">LLM Generation</span>
+                                <span class="flow-data">Ollama → Llama 3.2 1B</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🛡️</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Reflection</span>
+                                <span class="flow-data">Verify claims, threshold=0.3</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="flow-icon">✅</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Response</span>
+                                <span class="flow-data">Answer + Citations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Ingestion Flow -->
+                <div class="flow-diagram">
+                    <h4 class="flow-title">📄 Document Ingestion Pipeline</h4>
+                    <div class="flow-container">
+                        <div class="flow-step">
+                            <div class="flow-icon">📁</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Raw Documents</span>
+                                <span class="flow-data">PDF, TXT, DOCX files</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">📖</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Text Extraction</span>
+                                <span class="flow-data">pypdf, python-docx</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">✂️</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Chunking</span>
+                                <span class="flow-data">512 tokens, 50 overlap</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🏷️</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Metadata</span>
+                                <span class="flow-data">filename, page, position</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🧮</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Embedding</span>
+                                <span class="flow-data">SentenceTransformers</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="flow-icon">💾</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Vector Store</span>
+                                <span class="flow-data">ChromaDB persistent</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fine-Tuning Flow -->
+                <div class="flow-diagram">
+                    <h4 class="flow-title">🎯 Fine-Tuning Pipeline (ModelOps)</h4>
+                    <div class="flow-container">
+                        <div class="flow-step">
+                            <div class="flow-icon">📊</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Training Data</span>
+                                <span class="flow-data">JSON/Parquet dataset</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🔄</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Tokenization</span>
+                                <span class="flow-data">max_length=512*</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">📦</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Load Model</span>
+                                <span class="flow-data">4-bit NF4 quantized</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🔧</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Apply LoRA</span>
+                                <span class="flow-data">r=8, α=16, 0.1% params</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">⚡</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Training</span>
+                                <span class="flow-data">HF Trainer, MLflow</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="flow-icon">📈</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Evaluation</span>
+                                <span class="flow-data">loss, perplexity</span>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="flow-icon">💎</div>
+                            <div class="flow-content">
+                                <span class="flow-label">Adapter</span>
+                                <span class="flow-data">LoRA weights saved</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack Details - Expanded -->
+            <div class="tech-stack-section">
+                <h3 class="subsection-title">Technology Stack (Complete)</h3>
+                <div class="tech-categories">
+                    <div class="tech-category">
+                        <h4>🤖 LLM & Fine-Tuning (ModelOps)</h4>
+                        <div class="tech-items">
+                            <div class="tech-item">
+                                <span class="tech-name">Meta Llama 3.2 1B</span>
+                                <span class="tech-desc">1 billion parameters, optimized for consumer hardware</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">QLoRA Configuration</span>
+                                <span class="tech-desc">r=8, alpha=16, dropout=0.1, target_modules=[q_proj, k_proj, v_proj, o_proj]</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">4-bit NF4 Quantization</span>
+                                <span class="tech-desc">BitsAndBytes, bnb_4bit_use_double_quant=True, compute_dtype=float16</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Optimizer</span>
+                                <span class="tech-desc">paged_adamw_8bit (memory efficient), lr=2e-4, weight_decay=0.01</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Training Args</span>
+                                <span class="tech-desc">batch=2, grad_accum=8 (effective=16), warmup=3%, max_grad_norm=0.3</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Gradient Checkpointing</span>
+                                <span class="tech-desc">Enabled for VRAM reduction (trades compute for memory)</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">MLflow Integration</span>
+                                <span class="tech-desc">Experiment tracking, param/metric logging, artifact registration</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-category">
+                        <h4>🔍 RAG Pipeline (EideticRAG)</h4>
+                        <div class="tech-items">
+                            <div class="tech-item">
+                                <span class="tech-name">Vector Database</span>
+                                <span class="tech-desc">ChromaDB with HNSW indexing, persistent storage mode</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Embedding Model</span>
+                                <span class="tech-desc">all-MiniLM-L6-v2 (384 dimensions, 80ms per query*)</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Chunking Strategy</span>
+                                <span class="tech-desc">512 tokens max, 50 token overlap, paragraph-aware splitting</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Intent Classification</span>
+                                <span class="tech-desc">Keyword + regex matching, 7 intent types, confidence scoring</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Retrieval Controller</span>
+                                <span class="tech-desc">Policy-based retrieval, default_k=5, adaptive depth</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">MMR (Diversity)</span>
+                                <span class="tech-desc">Maximal Marginal Relevance, diversity_factor=0.7</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Multi-Hop Retrieval</span>
+                                <span class="tech-desc">Iterative query refinement for complex questions</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-category">
+                        <h4>🛡️ Verification & Safety</h4>
+                        <div class="tech-items">
+                            <div class="tech-item">
+                                <span class="tech-name">Reflection Agent</span>
+                                <span class="tech-desc">max_iterations=3, hallucination_threshold=0.3</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Action Types</span>
+                                <span class="tech-desc">ACCEPT, REGENERATE, BROADEN, ESCALATE, REFUSE</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Verification Engine</span>
+                                <span class="tech-desc">Claim extraction + source document matching</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Safe Refusal</span>
+                                <span class="tech-desc">Graceful decline when evidence insufficient</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Answer Annotation</span>
+                                <span class="tech-desc">Highlights unsupported claims in output</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-category">
+                        <h4>⚙️ Infrastructure & APIs</h4>
+                        <div class="tech-items">
+                            <div class="tech-item">
+                                <span class="tech-name">FastAPI</span>
+                                <span class="tech-desc">Async REST API, OpenAPI docs at /docs</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Ollama</span>
+                                <span class="tech-desc">Local LLM server, REST API at localhost:11434</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">SQLite + SQLAlchemy</span>
+                                <span class="tech-desc">Metadata storage, ORM for data access</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Temporal.io</span>
+                                <span class="tech-desc">Workflow orchestration for training jobs (RetryPolicy with backoff)</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">HuggingFace Trainer</span>
+                                <span class="tech-desc">Training loop with checkpointing, evaluation, metrics logging</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tech-category">
+                        <h4>📦 Data Engineering</h4>
+                        <div class="tech-items">
+                            <div class="tech-item">
+                                <span class="tech-name">Dataset Pipeline</span>
+                                <span class="tech-desc">Ingestion → Preprocessing → Validation → Registration</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Auto-Labeling</span>
+                                <span class="tech-desc">Rule-based labeling for instruction datasets</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Data Quality</span>
+                                <span class="tech-desc">Schema validation, duplicate detection, text cleaning</span>
+                            </div>
+                            <div class="tech-item">
+                                <span class="tech-name">Privacy Features</span>
+                                <span class="tech-desc">PII anonymization, GDPR-compliant by design*</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics - Expanded with Asterisks -->
+            <div class="metrics-section">
+                <h3 class="subsection-title">Performance Benchmarks</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-value">~200ms*</span>
+                        <span class="metric-label">Retrieval Latency</span>
+                        <span class="metric-note">5K docs, SSD, warm cache</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">~2-5s*</span>
+                        <span class="metric-label">Full Query Response</span>
+                        <span class="metric-note">Retrieval + LLM generation</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">4GB</span>
+                        <span class="metric-label">VRAM (Inference)</span>
+                        <span class="metric-note">Llama 3.2 1B via Ollama</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">8GB*</span>
+                        <span class="metric-label">VRAM (Fine-Tuning)</span>
+                        <span class="metric-note">QLoRA on T4 GPU</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">2-4 hrs*</span>
+                        <span class="metric-label">Fine-Tuning Time</span>
+                        <span class="metric-note">3 epochs, 1K samples, T4</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">384 dim</span>
+                        <span class="metric-label">Embedding Size</span>
+                        <span class="metric-note">MiniLM-L6-v2</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">~10GB</span>
+                        <span class="metric-label">Disk Space</span>
+                        <span class="metric-note">Model + deps + data</span>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-value">0.1%</span>
+                        <span class="metric-label">Trainable Params</span>
+                        <span class="metric-note">LoRA adapters only</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIMITATIONS SECTION -->
+            <div class="limitations-section">
+                <h3 class="subsection-title">⚠️ Known Limitations</h3>
+                <div class="limitations-box">
+                    <p class="limitations-note">* Items marked with asterisk are estimates and may vary based on hardware, data, and configuration.</p>
+                    <ul class="limitations-list">
+                        <li>
+                            <strong>Fine-Tuning Requires GPU:</strong> QLoRA training needs an NVIDIA GPU with 8GB+ VRAM. Recommended to use Google Colab (free T4) for fine-tuning. Local fine-tuning on CPU is impractical.
+                        </li>
+                        <li>
+                            <strong>1B Model Context Limit:</strong> Llama 3.2 1B has a smaller context window than larger models. Complex queries may hit token limits.
+                        </li>
+                        <li>
+                            <strong>Quality vs Larger Models:</strong> A 1B parameter model will not match GPT-4 or Claude quality. Best for domain-specific tasks after fine-tuning.
+                        </li>
+                        <li>
+                            <strong>No Hybrid Search Yet:</strong> Current implementation uses vector search only. BM25 hybrid search is planned but not yet implemented.
+                        </li>
+                        <li>
+                            <strong>No Cross-Encoder Reranking:</strong> Reranking uses simple scoring, not transformer-based cross-encoders.
+                        </li>
+                        <li>
+                            <strong>Embedding Model Fixed:</strong> Currently uses MiniLM-L6-v2. Switching models requires re-indexing all documents.
+                        </li>
+                        <li>
+                            <strong>No Streaming Responses:</strong> LLM responses are returned as complete text, not token-by-token streaming.
+                        </li>
+                        <li>
+                            <strong>Intent Classifier is Rule-Based:</strong> Uses keyword/regex matching, not ML-based classification.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Skills Demonstrated (Expanded) -->
+            <div class="skills-section">
+                <h3 class="subsection-title">Skills Demonstrated</h3>
+                <div class="skills-cloud">
+                    <span class="skill-tag hot">LLMs</span>
+                    <span class="skill-tag hot">RAG</span>
+                    <span class="skill-tag hot">PEFT</span>
+                    <span class="skill-tag hot">LoRA</span>
+                    <span class="skill-tag hot">QLoRA</span>
+                    <span class="skill-tag hot">Fine-Tuning</span>
+                    <span class="skill-tag">Meta Llama</span>
+                    <span class="skill-tag">Hugging Face Transformers</span>
+                    <span class="skill-tag">PyTorch</span>
+                    <span class="skill-tag">ChromaDB</span>
+                    <span class="skill-tag">Vector Databases</span>
+                    <span class="skill-tag">SentenceTransformers</span>
+                    <span class="skill-tag">Semantic Search</span>
+                    <span class="skill-tag">Embeddings</span>
+                    <span class="skill-tag">FastAPI</span>
+                    <span class="skill-tag">MLflow</span>
+                    <span class="skill-tag">Ollama</span>
+                    <span class="skill-tag">4-bit Quantization</span>
+                    <span class="skill-tag">Gradient Checkpointing</span>
+                    <span class="skill-tag">BitsAndBytes</span>
+                    <span class="skill-tag">Temporal.io</span>
+                    <span class="skill-tag">Workflow Orchestration</span>
+                    <span class="skill-tag">ETL Pipelines</span>
+                    <span class="skill-tag">Data Quality</span>
+                    <span class="skill-tag">GDPR Compliance</span>
+                    <span class="skill-tag">Hallucination Detection</span>
+                    <span class="skill-tag">Prompt Engineering</span>
+                    <span class="skill-tag">SQLAlchemy</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">REST APIs</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 3: BASIC INSTALLATION (For Everyone)
+         ============================================ -->
+    <section class="installation" id="installation">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Quick Start Guide</span>
+                <h2 class="section-title">Get Running in <span class="gradient-text">10-15 Minutes</span></h2>
+                <p class="section-subtitle">No coding experience required. Just follow the steps.</p>
+            </div>
+
+            <div class="prereq-box">
+                <h3>📋 Before You Start</h3>
+                <p>Make sure you have these installed:</p>
+                <div class="prereq-grid">
+                    <div class="prereq-item">
+                        <a href="https://www.python.org/downloads/" target="_blank">
+                            <span class="prereq-icon">🐍</span>
+                            <span class="prereq-name">Python 3.10+</span>
+                        </a>
+                    </div>
+                    <div class="prereq-item">
+                        <a href="https://git-scm.com/downloads" target="_blank">
+                            <span class="prereq-icon">📦</span>
+                            <span class="prereq-name">Git</span>
+                        </a>
+                    </div>
+                    <div class="prereq-item">
+                        <a href="https://ollama.ai" target="_blank">
+                            <span class="prereq-icon">🦙</span>
+                            <span class="prereq-name">Ollama</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="install-steps">
+                <div class="install-step">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3>Download the Project</h3>
+                        <span class="step-time">~2 min</span>
+                    </div>
+                    <div class="step-content">
+                        <p>Open your terminal (Command Prompt on Windows, Terminal on Mac/Linux) and run:</p>
+                        <div class="code-block">
+                            <pre><code>git clone https://github.com/Akshar-Guha/Chat_Bot.git
+cd Chat_Bot</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3>Set Up Python Environment</h3>
+                        <span class="step-time">~1 min</span>
+                    </div>
+                    <div class="step-content">
+                        <p>Create an isolated environment so it doesn't mess with other Python projects:</p>
+                        <div class="code-block">
+                            <pre><code># Windows
+python -m venv .venv
+.venv\Scripts\activate
+
+# Mac/Linux
+python3 -m venv .venv
+source .venv/bin/activate</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="step-note">You'll see (.venv) appear in your terminal when it's active.</p>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3>Install Dependencies</h3>
+                        <span class="step-time">~5 min</span>
+                    </div>
+                    <div class="step-content">
+                        <p>This downloads all the required libraries:</p>
+                        <div class="code-block">
+                            <pre><code>pip install -r requirements.txt</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="step-note">This may take a few minutes. You'll see a lot of text scrolling—that's normal.</p>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <h3>Download the AI Model</h3>
+                        <span class="step-time">~5 min (depends on internet)</span>
+                    </div>
+                    <div class="step-content">
+                        <p>First, make sure Ollama is running (open the Ollama app). Then download the Llama model:</p>
+                        <div class="code-block">
+                            <pre><code>ollama pull llama3.2:1b</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="step-note">This downloads ~1.3GB. The model will be stored locally and works offline after this.</p>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <h3>Add Your Documents (Optional)</h3>
+                        <span class="step-time">~1 min</span>
+                    </div>
+                    <div class="step-content">
+                        <p>Put your PDF, TXT, or DOCX files in the <code>data/</code> folder, then index them:</p>
+                        <div class="code-block">
+                            <pre><code>python -m src.core.cli ingest ./data/</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="install-step">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <h3>Start the Application!</h3>
+                        <span class="step-time">Ready to use</span>
+                    </div>
+                    <div class="step-content">
+                        <p>Launch the API server:</p>
+                        <div class="code-block">
+                            <pre><code>python -m src.api.main</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="step-note">Open <a href="http://localhost:8000/docs" target="_blank">http://localhost:8000/docs</a> in your browser to see the API.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-requirements">
+                <h3>💻 System Requirements</h3>
+                <div class="req-grid">
+                    <div class="req-item">
+                        <span class="req-label">RAM</span>
+                        <span class="req-value">8GB minimum, 16GB recommended</span>
+                    </div>
+                    <div class="req-item">
+                        <span class="req-label">Storage</span>
+                        <span class="req-value">10GB free space</span>
+                    </div>
+                    <div class="req-item">
+                        <span class="req-label">GPU</span>
+                        <span class="req-value">Not required for inference (but helps)</span>
+                    </div>
+                    <div class="req-item">
+                        <span class="req-label">OS</span>
+                        <span class="req-value">Windows 10+, macOS 12+, or Linux</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         SECTION 4: ADVANCED FINE-TUNING (For Developers)
+         ============================================ -->
+    <section class="fine-tuning" id="fine-tuning">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Advanced: Fine-Tuning</span>
+                <h2 class="section-title">Train Your Own <span class="gradient-text">Custom Model</span></h2>
+                <p class="section-subtitle">For developers who want to fine-tune Llama on their own data. Requires Google Colab (free tier works).</p>
+            </div>
+
+            <div class="warning-box">
+                <h3>⚠️ Important Notes</h3>
+                <ul>
+                    <li><strong>GPU Required:</strong> Fine-tuning needs a GPU. Use Google Colab (free T4 GPU) or your own NVIDIA GPU with 8GB+ VRAM.</li>
+                    <li><strong>Time Required:</strong> Expect 2-4 hours for training on a typical dataset (1-5K samples).</li>
+                    <li><strong>Not beginner-friendly:</strong> This section assumes you're comfortable with Python, Jupyter notebooks, and command line.</li>
+                </ul>
+            </div>
+
+            <div class="finetune-steps">
+                <div class="finetune-step">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3>Prepare Your Training Data</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Create a JSON file with your training examples in this format:</p>
+                        <div class="code-block">
+                            <pre><code>[
+  {
+    "instruction": "Summarize the following document",
+    "input": "Your document text here...",
+    "output": "The expected summary..."
+  },
+  {
+    "instruction": "Answer this question about the document",
+    "input": "What is the main topic?",
+    "output": "The main topic is..."
+  }
+]</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <p class="step-note">Need 500-5000 examples for good results. Quality matters more than quantity.</p>
+                    </div>
+                </div>
+
+                <div class="finetune-step">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3>Open in Google Colab</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>We provide a ready-to-use notebook. Click the badge to open:</p>
+                        <a href="https://colab.research.google.com/github/Akshar-Guha/Chat_Bot/blob/main/Fine%20Tunning/modelops/colab_finetuning.ipynb" target="_blank" class="colab-badge">
+                            <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab">
+                        </a>
+                        <p class="step-note">Make sure to select <strong>Runtime → Change runtime type → T4 GPU</strong> (free tier).</p>
+                    </div>
+                </div>
+
+                <div class="finetune-step">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3>Configure Training Parameters</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Key settings in the notebook (already optimized for T4 GPU):</p>
+                        <div class="code-block">
+                            <pre><code># LoRA Configuration
+lora_r = 8                    # Rank (higher = more capacity, more VRAM)
+lora_alpha = 16               # Scaling factor
+lora_dropout = 0.1            # Regularization
+
+# Quantization (saves VRAM)
+load_in_4bit = True           # 4-bit NF4 quantization
+bnb_4bit_compute_dtype = "float16"
+
+# Training
+num_epochs = 3
+batch_size = 2                # Increase if you have more VRAM
+gradient_accumulation = 8     # Effective batch = 2 × 8 = 16
+learning_rate = 2e-4</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finetune-step">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <h3>Run Training</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>Execute all cells in the notebook. Training will:</p>
+                        <ul class="step-list">
+                            <li>Load Llama 3.2 1B with 4-bit quantization</li>
+                            <li>Apply LoRA adapters to attention layers</li>
+                            <li>Train on your data with checkpointing</li>
+                            <li>Save the adapter to Google Drive</li>
+                        </ul>
+                        <p class="step-note">Training ~1K samples takes about 2 hours on T4. Watch the loss curve—it should decrease.</p>
+                    </div>
+                </div>
+
+                <div class="finetune-step">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <h3>Export and Use Locally</h3>
+                    </div>
+                    <div class="step-content">
+                        <p>After training, download the adapter and merge with the base model:</p>
+                        <div class="code-block">
+                            <pre><code># In the notebook, after training completes:
+# The adapter is saved to Google Drive automatically
+
+# On your local machine:
+# 1. Download the adapter folder from Drive
+# 2. Merge with Ollama:
+ollama create my-custom-model -f Modelfile</code></pre>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="finetune-tips">
+                <h3>💡 Pro Tips</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>Data Quality > Quantity</h4>
+                        <p>500 high-quality examples beats 5000 noisy ones. Clean your data carefully.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>Monitor the Loss</h4>
+                        <p>Training loss should decrease. If it plateaus, try lower learning rate.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>Save Checkpoints</h4>
+                        <p>Colab sessions disconnect. Enable Drive auto-save in the notebook.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h4>Test Iteratively</h4>
+                        <p>Train for 1 epoch, test, then continue. Don't train blindly for 10 epochs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Own Your AI?</h2>
+                <p>No more sending your data to the cloud. No more content filters. Your AI, your rules.</p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/Akshar-Guha/Chat_Bot" class="btn btn-primary btn-large" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        View on GitHub
+                    </a>
+                    <a href="#installation" class="btn btn-secondary btn-large">
+                        Get Started Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">🧠</span>
+                    <span class="logo-text">EideticRAG</span>
+                </div>
+                <p class="footer-tagline">Privacy-First Local AI Platform</p>
+                <div class="footer-links">
+                    <a href="https://github.com/Akshar-Guha/Chat_Bot" target="_blank">GitHub</a>
+                    <a href="#benefits">Benefits</a>
+                    <a href="#stats-for-nerds">Tech Stack</a>
+                    <a href="#installation">Installation</a>
+                </div>
+                <p class="footer-copy">© 2024 EideticRAG. Built for Data Privacy Research.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
