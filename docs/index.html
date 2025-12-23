@@ -668,33 +668,24 @@
 
             <!-- LIMITATIONS SECTION -->
             <div class="limitations-section">
-                <h3 class="subsection-title">⚠️ Known Limitations</h3>
+                <h3 class="subsection-title">⚠️ Trade-Offs of Local Deployment</h3>
                 <div class="limitations-box">
-                    <p class="limitations-note">* Items marked with asterisk are estimates and may vary based on hardware, data, and configuration.</p>
+                    <p class="limitations-note">* What you sacrifice for complete privacy and zero recurring costs.</p>
                     <ul class="limitations-list">
                         <li>
-                            <strong>Fine-Tuning Requires GPU:</strong> QLoRA training needs an NVIDIA GPU with 8GB+ VRAM. Recommended to use Google Colab (free T4) for fine-tuning. Local fine-tuning on CPU is impractical.
+                            <strong>You Need Your Own Hardware:</strong> Unlike cloud APIs, you control the compute. Smaller models (1B-3B) run on laptops; larger models need better GPUs. <em>Trade-off: No usage limits or rate throttling.</em>
                         </li>
                         <li>
-                            <strong>1B Model Context Limit:</strong> Llama 3.2 1B has a smaller context window than larger models. Complex queries may hit token limits.
+                            <strong>Fine-Tuning Requires a GPU:</strong> Training requires NVIDIA GPUs (or free Colab/Kaggle). <em>Trade-off: Complete control over model behavior—no content filters, no censorship.</em>
                         </li>
                         <li>
-                            <strong>Quality vs Larger Models:</strong> A 1B parameter model will not match GPT-4 or Claude quality. Best for domain-specific tasks after fine-tuning.
+                            <strong>Setup Takes Time (~15 min):</strong> Cloud models need just an API key. Local requires downloading models and dependencies. <em>Trade-off: One-time setup for permanent data privacy.</em>
                         </li>
                         <li>
-                            <strong>No Hybrid Search Yet:</strong> Current implementation uses vector search only. BM25 hybrid search is planned but not yet implemented.
+                            <strong>Smaller Models = Less General Knowledge:</strong> A 1B/3B model won't match GPT-4's broad knowledge. <em>Trade-off: After fine-tuning on YOUR data, it outperforms GPT-4 in your specific domain—at $0/month.</em>
                         </li>
                         <li>
-                            <strong>No Cross-Encoder Reranking:</strong> Reranking uses simple scoring, not transformer-based cross-encoders.
-                        </li>
-                        <li>
-                            <strong>Embedding Model Fixed:</strong> Currently uses MiniLM-L6-v2. Switching models requires re-indexing all documents.
-                        </li>
-                        <li>
-                            <strong>No Streaming Responses:</strong> LLM responses are returned as complete text, not token-by-token streaming.
-                        </li>
-                        <li>
-                            <strong>Intent Classifier is Rule-Based:</strong> Uses keyword/regex matching, not ML-based classification.
+                            <strong>Manual Updates Required:</strong> Cloud models auto-update; local models don't. <em>Trade-off: No sudden API changes breaking your app. Stability and version control.</em>
                         </li>
                     </ul>
                 </div>
