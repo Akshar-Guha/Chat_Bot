@@ -123,7 +123,7 @@ flowchart LR
 
 ---
 
-## Portfolio highlight: Local conversational AI (previous project)
+## Portfolio highlight: Local conversational AI 
 
 ### Privacy-preserving foundation
 - Developed an on-device chatbot architecture with zero external data exposure, guaranteeing GDPR compliance and removing cloud or third-party dependencies.
@@ -166,31 +166,6 @@ flowchart LR
 **Python · Machine Learning · Deep Learning · PyTorch · CUDA · GPU Computing · Google Colab · Hugging Face Transformers · Large Language Models (LLMs) · Meta Llama · LoRA · QLoRA · PEFT · Model Quantisation · FastAPI · REST API · Microservices · ChromaDB · Vector Databases · SQLite · SQLAlchemy · Retrieval-Augmented Generation (RAG) · NLP · Semantic Search · Intent Classification · Hallucination Detection · ETL Pipelines · Data Engineering · GDPR Compliance · Privacy Engineering · Prompt Engineering · API Development · CLI Development · Model Fine-Tuning**
 
 ---
-
-## Hands-on quick start
-
-```bash
-# 1. Provision the environment (Windows example)
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-
-# 2. Ingest a corpus
-python -m src.core.cli ingest data/sample_documents/sample1.txt
-
-# 3. Serve the API
-python -m src.api.main
-
-# 4. (Optional) Run the dashboard
-cd src/frontend
-npm install
-npm start
-```
-
-Prefer terminal-first interactions? Call `python -m src.core.cli search "How does caching work?"` to run retrieval and reflection directly from the CLI.
-
----
-
 ## Configuration & extensibility
 
 - The legacy API reads environment variables via `python-dotenv` (`RAG_GENERATOR_TYPE`, `RAG_MODEL_NAME`, `RAG_API_KEY`, `RAG_TEMPERATURE`, etc.) in `src/api/main.py`.
